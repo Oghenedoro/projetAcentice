@@ -1,0 +1,14 @@
+spring:
+  security:
+    user:
+      name: admin
+      password: admin
+
+  liquibase:
+    change-log: "classpath:/db/changelog/changelog-master.xml"
+
+  datasource:
+    platform: postgres
+    url: "jdbc:postgresql://localhost:5442/ideale"
+    username: db_owner
+    password: db_owner123
