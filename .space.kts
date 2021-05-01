@@ -29,7 +29,7 @@ job("Build and push Docker") {
             labels["vendor"] = "Acentice"
         }
 
-        push("acentice.registry.jetbrains.space/ideale/idealeapi") {
+        push("acentice.registry.jetbrains.space/p/ideale/acentice/idealeapi") {
             tag = "version-0.\$JB_SPACE_EXECUTION_NUMBER-\$BRANCH"
         }
     }
