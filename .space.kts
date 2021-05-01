@@ -4,7 +4,8 @@
 * For more info, see https://www.jetbrains.com/help/space/automation.html
 */
 
-job("Build and run tests") {
+job("Build and push Docker") {
+
     container(displayName = "Run mvn install", image = "maven:latest") {
         shellScript {
             content = """
@@ -13,9 +14,7 @@ job("Build and run tests") {
             """
         }
     }
-}
 
-job("Build and push Docker") {
     docker {
         beforeBuildScript {
             content = """
