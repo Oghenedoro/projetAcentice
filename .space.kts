@@ -10,7 +10,7 @@ job("Build and push Docker") {
         shellScript {
             content = """
 	            mvn clean install
-                cp target/*.jar mnt/space/share
+                cp target/*.jar $mountDir/share
             """
         }
     }
@@ -20,7 +20,7 @@ job("Build and push Docker") {
             content = """
                 export BRANCH=${'$'}(echo ${'$'}JB_SPACE_GIT_BRANCH | cut -d'/' -f 3)
             	mkdir target
-            	cp mnt/space/share/*.jar target/
+            	cp $mountDir/share/*.jar target/
             """
         }
         build {
