@@ -9,6 +9,6 @@ spring:
 
   datasource:
     platform: postgres
-    url: "jdbc:postgresql://localhost:5442/ideale"
-    username: db_owner
-    password: db_owner123
+    url: "jdbc:postgresql://postgres:5432/IDEALE"
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}

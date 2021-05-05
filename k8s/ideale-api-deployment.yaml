@@ -1,0 +1,49 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ideale-api
+spec:
+  selector:
+    matchLabels:
+      app: ideale-api
+  replicas: 2
+  template:
+    metadata:
+      labels:
+        app: ideale-api
+        visualize: "true"
+    spec:
+      containers:
+        - name: ideale-api
+          image: ideale-api:latest
+          imagePullPolicy: Never
+          ports:
+            - containerPort: 8080
+          env:
+            - name: DB_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: ideale-api-secret
+                  key: DB_USERNAME
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: ideale-api-secret
+                  key: DB_PASSWORD
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    visualize: "true"
+  name: ideale-api-service
+spec:
+  selector:
+    app: ideale-api
+  ports:
+    - name: http
+      protocol: TCP
+      port: 8080
+      targetPort: 8080
+  type: NodePort

@@ -34,3 +34,28 @@ job("Build and push Docker") {
         }
     }
 }
+
+job("Deploy to k8s dev cluster") {
+    startOn {
+        gitPush {
+            branchFilter {
+                // add 'main'
+                +"refs/heads/develop"
+
+                -"refs/heads/IDEALE-*"
+            }
+        }
+    }
+
+    container(displayName = "Deploy dev cluster", image = "bitnami/kubectl:latest") {
+        env["K8S_CONFIG"] = Secrets("k8s-config")
+        shellScript {
+            content = """
+                ls -al /.kube/
+	            echo is  ${'$'}K8S_CONFIG
+                 echo "${'$'}K8S_CONFIG" >> /.kube/config
+                 kubectl apply -f k8s/
+            """
+        }
+    }
+}

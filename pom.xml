@@ -14,7 +14,7 @@
     <name>ideale</name>
     <description>Une api offrant des services pour gérer la production et la vente des produits Ideale</description>
     <properties>
-        <java.version>16</java.version>
+        <java.version>11</java.version>
         <liquibase.version>4.3.5</liquibase.version>
     </properties>
     <dependencies>

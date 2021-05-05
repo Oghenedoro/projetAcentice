@@ -25,3 +25,6 @@ spring:
     console:
       enabled: true
       path: /console
+
+greeter:
+  message: hello
