@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
         - name: ideale-api
-          image: ideale-api:latest
+          image: acentice.registry.jetbrains.space/p/ideale/acentice/idealeapi:version-master
           imagePullPolicy: Never
           ports:
             - containerPort: 8080

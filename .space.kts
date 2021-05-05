@@ -30,7 +30,7 @@ job("Build and push Docker") {
         }
 
         push("acentice.registry.jetbrains.space/p/ideale/acentice/idealeapi") {
-            tag = "version-0.\$JB_SPACE_EXECUTION_NUMBER-\$BRANCH"
+            tag = "version-\$BRANCH"
         }
     }
 }
@@ -47,7 +47,7 @@ job("Deploy to k8s dev cluster") {
         }
     }
 
-    container(displayName = "Deploy dev cluster", image = "bitnami/kubectl:latest") {
+    container(displayName = "Deploy dev cluster", image = "acentice.registry.jetbrains.space/p/ideale/acentice/kubectl:latest") {
         env["K8S_CONFIG"] = Secrets("k8s-config")
         shellScript {
             content = """
