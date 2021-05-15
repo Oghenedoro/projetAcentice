@@ -23,12 +23,13 @@ public class StockProductionService {
     private PieceDetacheeCatRepository detacheeCatRepository;
 
 
-   public PieceDetachee createPieceDetachee(PieceDetachee detachee, Long catId) throws ParseException {
+   public PieceDetachee createPieceDetachee(PieceDetachee detachee, String type) throws ParseException {
 
-       PieceDetacheeCat cat = detacheeCatRepository.findById(catId).get();
+       PieceDetacheeCat cat = detacheeCatRepository.findByType(type);
 
        detachee.setDateDachat(new Date());
        detachee.setCategorie(cat);
+       detachee.setDureeDeVie(detachee.getDureeDeVie()+ " mois");
 
        return pieceDetacheeRepository.save(detachee);
    }

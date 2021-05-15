@@ -36,4 +36,5 @@ public class MatierePremiere {
 
     @Column(name = "DESCRIPTION",length = 500)
     private String discription;
+
 }

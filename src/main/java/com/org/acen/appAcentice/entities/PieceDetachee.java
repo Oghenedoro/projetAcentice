@@ -28,7 +28,7 @@ public class PieceDetachee {
     private Date dateDachat;
 
     @Column(name="DUREEDEVIE")
-    private int dureeDeVie;
+    private String dureeDeVie;
 
     @ManyToOne(cascade = CascadeType.ALL)
     private PieceDetacheeCat categorie;

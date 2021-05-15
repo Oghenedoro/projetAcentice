@@ -10,7 +10,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Table;
 
-@Table(name="FOURNISSEUR_has_MATIERE_PREMIERE")
+@Table(name="FOURNISSEUR_has_PIECE_DETACHEE")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -18,8 +18,8 @@ import javax.persistence.Table;
 public class FournisseurPD extends Fournisseur{
 
     @Column(name = "ID",length = 45)
-    @GenericGenerator(name="fournisseurMP", strategy = "com.org.acen.appAcentice.utils.GeneratorIdFournisseurMP")
-    @GeneratedValue(generator = "fournisseurMP")
+    @GenericGenerator(name="fournisseurPD", strategy = "com.org.acen.appAcentice.utils.GeneratorIdFournisseurPD")
+    @GeneratedValue(generator = "fournisseurPD")
     private String id;
 
     @Column(name = "PIECEDETACHEE_reference", length = 45)

@@ -18,9 +18,9 @@ public class PieceDetacheeController {
     @Autowired
     StockProductionService productionService;
 
-    @RequestMapping("/v1/piece-detachee/{idCat}")
-    public PieceDetachee createPieceDetachee(@RequestBody PieceDetachee pieceDetachee, @PathVariable Long idCat) throws ParseException {
-        return productionService.createPieceDetachee(pieceDetachee, idCat);
+    @RequestMapping("/v1/piece-detachee/{type}")
+    public PieceDetachee createPieceDetachee(@RequestBody PieceDetachee pieceDetachee, @PathVariable String type) throws ParseException {
+        return productionService.createPieceDetachee(pieceDetachee, type);
     }
 
     @RequestMapping("/v1/piece-categorie")
