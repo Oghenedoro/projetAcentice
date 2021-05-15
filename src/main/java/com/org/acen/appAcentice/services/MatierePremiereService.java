@@ -1,8 +1,10 @@
 package com.org.acen.appAcentice.services;
 
 import com.org.acen.appAcentice.entities.MatierePremiere;
+import com.org.acen.appAcentice.entities.MatierePremiereCat;
 import com.org.acen.appAcentice.entities.PieceDetachee;
 import com.org.acen.appAcentice.entities.PieceDetacheeCat;
+import com.org.acen.appAcentice.repositories.MatierePremiereCatRepository;
 import com.org.acen.appAcentice.repositories.MatierePremiereRepository;
 import com.org.acen.appAcentice.repositories.PieceDetacheeCatRepository;
 import com.org.acen.appAcentice.repositories.PieceDetacheeRepository;
@@ -13,34 +15,23 @@ import java.text.ParseException;
 import java.util.Date;
 
 @Service
-public class StockProductionService {
+public class MatierePremiereService {
 
-    @Autowired
-    private PieceDetacheeRepository pieceDetacheeRepository;
     @Autowired
     private MatierePremiereRepository matierePremiereRepository;
     @Autowired
-    private PieceDetacheeCatRepository detacheeCatRepository;
+    private MatierePremiereCatRepository matierePremiereCatRepository;
 
 
-   public PieceDetachee createPieceDetachee(PieceDetachee detachee, String type) throws ParseException {
 
-       PieceDetacheeCat cat = detacheeCatRepository.findByType(type);
-
-       detachee.setDateDachat(new Date());
-       detachee.setCategorie(cat);
-       detachee.setDureeDeVie(detachee.getDureeDeVie()+ " mois");
-
-       return pieceDetacheeRepository.save(detachee);
-   }
-
-    public MatierePremiere createMatirePrem(MatierePremiere matierePremier) throws ParseException {
+    public MatierePremiere createMatirePrem(MatierePremiere matierePremier, String type) throws ParseException {
         matierePremier.setDateDachat(new Date());
+        MatierePremiereCat matierePremiereCat = matierePremiereCatRepository.findByType(type);
+        matierePremier.setCategorie(matierePremiereCat);
         return matierePremiereRepository.save(matierePremier);
     }
 
-    public PieceDetacheeCat create(PieceDetacheeCat pieceDetacheeCat){
-        return detacheeCatRepository.save(pieceDetacheeCat);
+    public MatierePremiereCat createMatierePremiereCat(MatierePremiereCat matierePremiereCat){
+        return matierePremiereCatRepository.save(matierePremiereCat);
     }
-
 }

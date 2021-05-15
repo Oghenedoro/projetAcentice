@@ -28,4 +28,5 @@ public class FournisseurController {
 
         return fournisseurService.createFournisseurMP(fournisseurMP,idMP);
     }
+
 }

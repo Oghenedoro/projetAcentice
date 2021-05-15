@@ -31,8 +31,8 @@ public class MatierePremiere {
     @Column(name="DATEDEXPIRATION")
     private Date expirationDate;
 
-    @Column(name="CATEGORIE", length = 45)
-    private String categorie;
+    @ManyToOne(cascade = CascadeType.ALL)
+    private MatierePremiereCat categorie;
 
     @Column(name = "DESCRIPTION",length = 500)
     private String discription;

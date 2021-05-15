@@ -2,7 +2,8 @@ package com.org.acen.appAcentice.controllers;
 
 import com.org.acen.appAcentice.entities.PieceDetachee;
 import com.org.acen.appAcentice.entities.PieceDetacheeCat;
-import com.org.acen.appAcentice.services.StockProductionService;
+import com.org.acen.appAcentice.services.MatierePremiereService;
+import com.org.acen.appAcentice.services.PieceDetacheeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -16,16 +17,16 @@ import java.text.ParseException;
 public class PieceDetacheeController {
 
     @Autowired
-    StockProductionService productionService;
+    PieceDetacheeService pieceDetacheeService;
 
     @RequestMapping("/v1/piece-detachee/{type}")
     public PieceDetachee createPieceDetachee(@RequestBody PieceDetachee pieceDetachee, @PathVariable String type) throws ParseException {
-        return productionService.createPieceDetachee(pieceDetachee, type);
+        return pieceDetacheeService.createPieceDetachee(pieceDetachee, type);
     }
 
-    @RequestMapping("/v1/piece-categorie")
+    @RequestMapping("/v1/piece-categoriepd")
     public PieceDetacheeCat createPieceDetacheeCat(@RequestBody PieceDetacheeCat pieceDetacheeCat) throws ParseException {
-        return productionService.create(pieceDetacheeCat);
+        return pieceDetacheeService.createPieceDetacheeCat(pieceDetacheeCat);
     }
 
 }
