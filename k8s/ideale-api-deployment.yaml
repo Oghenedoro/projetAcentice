@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
         - name: ideale-api
-          image: acentice.registry.jetbrains.space/p/ideale/acentice/idealeapi:version-master
+          image: acentice.registry.jetbrains.space/p/ideale/acentice/idealeapi:master
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 8080
@@ -30,7 +30,8 @@ spec:
                 secretKeyRef:
                   name: ideale-api-secret
                   key: DB_PASSWORD
-
+      imagePullSecrets:
+        - name: registry-secret
 ---
 apiVersion: v1
 kind: Service
