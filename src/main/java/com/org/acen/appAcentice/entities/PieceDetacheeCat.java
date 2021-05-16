@@ -19,6 +19,6 @@ public class PieceDetacheeCat {
     private String type;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "categorie", fetch = FetchType.LAZY)
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "categorie", fetch = FetchType.LAZY)
     private List<PieceDetachee> piecedetachees;
 }
