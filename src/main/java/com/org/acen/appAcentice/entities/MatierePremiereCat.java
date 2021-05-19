@@ -20,5 +20,5 @@ public class MatierePremiereCat {
 
     @JsonIgnore
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "categorie", fetch = FetchType.LAZY)
-    private List<MatierePremiere> piecedetachees;
+    private List<MatierePremiere> matierePremieres;
 }

@@ -4,6 +4,7 @@ import com.org.acen.appAcentice.entities.MatierePremiere;
 import com.org.acen.appAcentice.entities.MatierePremiereCat;
 import com.org.acen.appAcentice.entities.PieceDetachee;
 import com.org.acen.appAcentice.entities.PieceDetacheeCat;
+import com.org.acen.appAcentice.models.MatierePremCatDto;
 import com.org.acen.appAcentice.models.MatierePremDto;
 import com.org.acen.appAcentice.repositories.MatierePremiereCatRepository;
 import com.org.acen.appAcentice.repositories.MatierePremiereRepository;
@@ -33,23 +34,23 @@ public class MatierePremiereService {
         return matierePremiereRepository.save(matierePremier);
     }
 
-    public MatierePremiereCat createMatierePremiereCat(MatierePremiereCat matierePremiereCat){
+    public MatierePremiereCat createMatierePremiereCat(MatierePremiereCat matierePremiereCat) {
         return matierePremiereCatRepository.save(matierePremiereCat);
     }
 
-    public List<MatierePremiere>getAllMatierePremiere(){
+    public List<MatierePremiere> getAllMatierePremiere() {
         return matierePremiereRepository.findAll();
     }
 
-    public MatierePremiere getMatPremByReference(String ref){
+    public MatierePremiere getMatPremByReference(String ref) {
         return matierePremiereRepository.findById(ref).get();
     }
 
 
-    public boolean supprimerMatierePremiere(String idMatPremier){
+    public boolean supprimerMatierePremiere(String idMatPremier) {
 
         MatierePremiere matierePremiere = matierePremiereRepository.findById(idMatPremier).get();
-        if(matierePremiere == null){
+        if (matierePremiere == null) {
             throw new RuntimeException("MatierePremiere not found !");
         }
         matierePremiereRepository.delete(matierePremiere);
@@ -69,5 +70,26 @@ public class MatierePremiereService {
         matierePremiere.setPrixDachat(matierePremDto.getPrixDachat());
 
         return matierePremiereRepository.save(matierePremiere);
+    }
+
+    public List<MatierePremiere> getMatirePremiereByCat(Long catId) {
+
+        MatierePremiereCat matierePremiereCat = matierePremiereCatRepository.findById(catId).get();
+
+        List<MatierePremiere> matierePremieres = matierePremiereCat.getMatierePremieres();
+        return matierePremieres;
+    }
+
+    public List<MatierePremiereCat> getAllCat() {
+        return matierePremiereCatRepository.findAll();
+    }
+
+    public MatierePremiereCat upDateMatPremierCat(MatierePremCatDto matierePremCatDto, Long id) throws ParseException {
+
+        MatierePremiereCat matierePremiereCat = matierePremiereCatRepository.findById(id).get();
+        matierePremiereCat.setId(matierePremiereCat.getId());
+        matierePremiereCat.setType(matierePremCatDto.getType());
+
+        return matierePremiereCatRepository.save(matierePremiereCat);
     }
 }

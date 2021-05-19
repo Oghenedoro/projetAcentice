@@ -2,7 +2,11 @@ package com.org.acen.appAcentice.controllers;
 
 import com.org.acen.appAcentice.entities.MatierePremiere;
 import com.org.acen.appAcentice.entities.MatierePremiereCat;
+import com.org.acen.appAcentice.entities.PieceDetachee;
+import com.org.acen.appAcentice.entities.PieceDetacheeCat;
+import com.org.acen.appAcentice.models.MatierePremCatDto;
 import com.org.acen.appAcentice.models.MatierePremDto;
+import com.org.acen.appAcentice.models.PieceDetacheeCatDto;
 import com.org.acen.appAcentice.services.MatierePremiereService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -20,11 +24,6 @@ public class MatierePremierController {
     @PostMapping("/v1/matieres-premieres/{type}")
     public MatierePremiere createMatPremier(@RequestBody MatierePremiere matierePremier, @PathVariable String type) throws ParseException {
         return matierePremiereService.createMatirePrem(matierePremier, type);
-    }
-
-    @PostMapping("/v1/piece-categoriemp")
-    public MatierePremiereCat createMatierePremiereCat(@RequestBody MatierePremiereCat matierePremiereCat) throws ParseException {
-        return matierePremiereService.createMatierePremiereCat(matierePremiereCat);
     }
 
     @GetMapping("/v1/matieres-premieres")
@@ -46,6 +45,11 @@ public class MatierePremierController {
 
     }
 
+    @GetMapping("/matieres-premieres/{catId}")
+    public List<MatierePremiere> getMatierePremierByCat(@PathVariable Long catId){
+        return matierePremiereService.getMatirePremiereByCat(catId);
+    }
+
     @PutMapping("/v1/matieres-premieres/{ref}")
     public MatierePremiere upDateMatPremier(@RequestBody MatierePremDto matierePremDto, @PathVariable String ref) throws ParseException {
 
@@ -53,4 +57,18 @@ public class MatierePremierController {
     }
 
 
+    @PostMapping("/v1/matieres-categoriemp")
+    public MatierePremiereCat createMatierePremiereCat(@RequestBody MatierePremiereCat matierePremiereCat) throws ParseException {
+        return matierePremiereService.createMatierePremiereCat(matierePremiereCat);
+    }
+
+    @GetMapping("/v1/matieres-categoriemp")
+    List<MatierePremiereCat> getAllCat(){
+        return matierePremiereService.getAllCat();
+    }
+
+    @PutMapping("/v1/matieres-categoriemp/{id}")
+    public MatierePremiereCat update(@RequestBody MatierePremCatDto matierePremCatDto, @PathVariable Long id) throws ParseException {
+        return matierePremiereService.upDateMatPremierCat(matierePremCatDto, id);
+    }
 }
