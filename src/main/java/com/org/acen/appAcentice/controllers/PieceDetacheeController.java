@@ -27,7 +27,7 @@ public class PieceDetacheeController {
         return pieceDetacheeService.createPieceDetachee(pieceDetachee, type);
     }
 
-    @GetMapping("/v1/piece-detachees/{catId}")
+    @GetMapping("/v1/piece-detacheess/{catId}")
     public List<PieceDetachee> getPieceDetacheeByCat(@PathVariable Long catId){
         return pieceDetacheeService.getPieceDetacheeByCat(catId);
     }

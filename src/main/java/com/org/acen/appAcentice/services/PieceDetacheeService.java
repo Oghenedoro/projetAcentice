@@ -1,10 +1,7 @@
 package com.org.acen.appAcentice.services;
 
-import com.org.acen.appAcentice.entities.MatierePremiere;
-import com.org.acen.appAcentice.entities.MatierePremiereCat;
 import com.org.acen.appAcentice.entities.PieceDetachee;
 import com.org.acen.appAcentice.entities.PieceDetacheeCat;
-import com.org.acen.appAcentice.models.MatierePremDto;
 import com.org.acen.appAcentice.models.PieceDetacheeCatDto;
 import com.org.acen.appAcentice.models.PieceDetacheeDTO;
 import com.org.acen.appAcentice.repositories.PieceDetacheeCatRepository;

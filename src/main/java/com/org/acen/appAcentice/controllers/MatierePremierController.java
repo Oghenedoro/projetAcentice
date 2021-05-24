@@ -2,11 +2,8 @@ package com.org.acen.appAcentice.controllers;
 
 import com.org.acen.appAcentice.entities.MatierePremiere;
 import com.org.acen.appAcentice.entities.MatierePremiereCat;
-import com.org.acen.appAcentice.entities.PieceDetachee;
-import com.org.acen.appAcentice.entities.PieceDetacheeCat;
 import com.org.acen.appAcentice.models.MatierePremCatDto;
 import com.org.acen.appAcentice.models.MatierePremDto;
-import com.org.acen.appAcentice.models.PieceDetacheeCatDto;
 import com.org.acen.appAcentice.services.MatierePremiereService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -45,7 +42,7 @@ public class MatierePremierController {
 
     }
 
-    @GetMapping("/matieres-premieres/{catId}")
+    @GetMapping("v1/matieres-premieress/{catId}")
     public List<MatierePremiere> getMatierePremierByCat(@PathVariable Long catId){
         return matierePremiereService.getMatirePremiereByCat(catId);
     }
