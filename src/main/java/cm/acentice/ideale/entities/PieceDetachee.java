@@ -13,7 +13,7 @@ public class PieceDetachee {
 
     @Id
     @Column(name = "REFERENCE",length = 20)
-    @GenericGenerator(name="GeneratorSequenceId", strategy = "com.org.acen.appAcentice.utils.GeneratorIdPieceDetachee")
+    @GenericGenerator(name="GeneratorSequenceId", strategy = "cm.acentice.ideale.utils.GeneratorIdPieceDetachee")
     @GeneratedValue(generator = "GeneratorSequenceId")
     private String reference;
 

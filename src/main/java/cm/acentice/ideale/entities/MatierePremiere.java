@@ -13,7 +13,7 @@ public class MatierePremiere {
 
     @Id
     @Column(name = "REFERENCEMP",length = 45)
-    @GenericGenerator(name="matierPremierId", strategy = "com.org.acen.appAcentice.utils.GeneratorIdMatierePremier")
+    @GenericGenerator(name="matierPremierId", strategy = "cm.acentice.ideale.utils.GeneratorIdMatierePremier")
     @GeneratedValue(generator = "matierPremierId")
     private String reference;
 

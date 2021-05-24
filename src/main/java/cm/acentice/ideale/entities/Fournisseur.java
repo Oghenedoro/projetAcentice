@@ -18,7 +18,7 @@ public class Fournisseur {
 
     @Id
     @Column(name = "ID",length = 45)
-    @GenericGenerator(name="fournisseurId", strategy = "com.org.acen.appAcentice.utils.GeneratorIdFournisseur")
+    @GenericGenerator(name="fournisseurId", strategy = "cm.acentice.ideale.utils.GeneratorIdFournisseur")
     @GeneratedValue(generator = "fournisseurId")
     private String id;
     @Column(name = "DENOMINATION", length = 125)

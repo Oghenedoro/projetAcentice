@@ -18,7 +18,7 @@ import javax.persistence.Table;
 public class FournisseurPD extends Fournisseur{
 
     @Column(name = "ID",length = 45)
-    @GenericGenerator(name="fournisseurPD", strategy = "com.org.acen.appAcentice.utils.GeneratorIdFournisseurPD")
+    @GenericGenerator(name="fournisseurPD", strategy = "cm.acentice.ideale.utils.GeneratorIdFournisseurPD")
     @GeneratedValue(generator = "fournisseurPD")
     private String id;
 
