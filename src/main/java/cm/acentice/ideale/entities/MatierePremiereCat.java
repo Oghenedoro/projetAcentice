@@ -1,6 +1,7 @@
 package cm.acentice.ideale.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -8,17 +9,21 @@ import java.util.List;
 
 @Data
 @Entity
+@Table(name = "CATEGORY_MATIERE_PREMIERE")
 public class MatierePremiereCat {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "ID")
+    @Column(name = "id")
     private Long id;
 
-    @Column(name = "TYPE", length = 45)
-    private String type;
+    @Column(name = "name", length = 45)
+    private String name;
 
-    @JsonIgnore
+    @Column(name = "description", length = 500)
+    private String description;
+
+    @JsonManagedReference
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "categorie", fetch = FetchType.LAZY)
     private List<MatierePremiere> matierePremieres;
 }

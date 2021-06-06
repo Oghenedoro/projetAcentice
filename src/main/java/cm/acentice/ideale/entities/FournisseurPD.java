@@ -1,27 +1,33 @@
 package cm.acentice.ideale.entities;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.GenericGenerator;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Table;
+import javax.persistence.*;
+import java.util.Collections;
+import java.util.Set;
 
-@Table(name="FOURNISSEUR_has_PIECE_DETACHEE")
-@Data
+@Table(name = "FOURNISSEUR_PD")
 @NoArgsConstructor
 @AllArgsConstructor
+@Data
 @Entity
-public class FournisseurPD extends Fournisseur{
+public class FournisseurPD extends AbstractFournisseur implements Fournisseur  {
 
-    @Column(name = "ID",length = 45)
-    @GenericGenerator(name="fournisseurPD", strategy = "cm.acentice.ideale.utils.GeneratorIdFournisseurPD")
-    @GeneratedValue(generator = "fournisseurPD")
-    private String id;
 
-    @Column(name = "PIECEDETACHEE_reference", length = 45)
-    private String pieceDetacheeRef;
+    @JsonManagedReference
+    @ManyToMany
+    @JoinTable(
+            name = "piece_detachee_fournisseurs",
+            joinColumns = @JoinColumn(name = "fournisseurs_id"),
+            inverseJoinColumns = @JoinColumn(name = "piece_detachee_reference"))
+    private Set<PieceDetachee> pieceDetachees;
+
+    @Override
+    public String getId() {
+        return this.id;
+    }
 }

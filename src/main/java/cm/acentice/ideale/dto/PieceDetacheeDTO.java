@@ -12,7 +12,7 @@ public class PieceDetacheeDTO {
     private String libelle;
     private String discription;
     private Date dateDachat;
-    private String dureeDeVie;
+    private int dureeDeVie;
     private PieceDetacheeCat categorie;
     private double prixDachat;
 }

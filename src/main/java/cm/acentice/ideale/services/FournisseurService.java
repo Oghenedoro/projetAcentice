@@ -9,6 +9,8 @@ import cm.acentice.ideale.repositories.PieceDetacheeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 import static cm.acentice.ideale.constants.TypeFournisseur.PARTICULIER;
 import static cm.acentice.ideale.constants.TypeFournisseur.SOCIETE;
 
@@ -28,46 +30,19 @@ public class FournisseurService {
         this.matierePremiereRepository = matierePremiereRepository;
     }
 
-    public Fournisseur createFournisseurPD(FournisseurPD fournisseurPD, String idPD) {
-
-        Fournisseur fournisseur = new FournisseurPD();
-        PieceDetachee pieceDetachee = pieceDetacheeRepository.findById(idPD).get();
-        if (fournisseur instanceof FournisseurPD) {
-            fournisseur.setDenomination(fournisseurPD.getDenomination());
-            fournisseur.setAdresse(fournisseurPD.getAdresse());
-            fournisseur.setQuartier(fournisseurPD.getQuartier());
-            fournisseur.setVille(fournisseurPD.getVille());
-            fournisseur.setEmail(fournisseurPD.getEmail());
-            fournisseur.setType(SOCIETE);
-            fournisseur.setPays(fournisseurPD.getPays());
-            fournisseur.setPays("Cameroun");
-            fournisseur.setTelephone(fournisseurPD.getTelephone());
-            fournisseur.setSecteurActivite(fournisseurPD.getSecteurActivite());
-            ((FournisseurPD) fournisseur).setPieceDetacheeRef(pieceDetachee.getReference());
-
-        }
-        return fournisseurPDRepository.save(fournisseur);
-
+    public FournisseurPD createFournisseurPieceDetachee(FournisseurPD fournisseurPD) {
+        return fournisseurPDRepository.save(fournisseurPD);
     }
 
-    public Fournisseur createFournisseurMP(FournisseurMP fournisseurMP, String idMP) {
+    public FournisseurMP createFournisseurMatierePremiere(FournisseurMP fournisseurMP) {
+        return fournisseurMPRepository.save(fournisseurMP);
+    }
 
-        Fournisseur fournisseur = new FournisseurMP();
-        MatierePremiere matierePremier = matierePremiereRepository.findById(idMP).get();
-        if (fournisseur instanceof FournisseurMP) {
-            fournisseur.setDenomination(fournisseurMP.getDenomination());
-            fournisseur.setAdresse(fournisseurMP.getAdresse());
-            fournisseur.setQuartier(fournisseurMP.getQuartier());
-            fournisseur.setVille(fournisseurMP.getVille());
-            fournisseur.setEmail(fournisseurMP.getEmail());
-            fournisseur.setType(PARTICULIER);
-            fournisseur.setPays("Cameroun");
-            fournisseur.setTelephone(fournisseurMP.getTelephone());
-            fournisseur.setSecteurActivite(fournisseurMP.getSecteurActivite());
-            ((FournisseurMP) fournisseur).setMatierePremierRef(matierePremier.getReference());
+    public List<FournisseurMP> getAllMatierePremieres() {
+        return this.fournisseurMPRepository.findAll();
+    }
 
-        }
-        return fournisseurMPRepository.save(fournisseur);
-
+    public List<FournisseurPD> getAllPieceDetaches() {
+        return this.fournisseurPDRepository.findAll();
     }
 }

@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xmlns:pro="http://www.liquibase.org/xml/ns/pro"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd
+http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibase-pro-3.8.xsd">
+
+    <changeSet author="rickdana" id="production">
+        <createTable tableName="CATEGORY_PIECE_DETACHEE">
+            <column name="id" type="int">
+                <constraints primaryKey="true" primaryKeyName="cat_piece_detachee_pk"/>
+            </column>
+            <column name="name" type="varchar(45)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="description" type="varchar(500)"/>
+        </createTable>
+
+        <createTable tableName="PIECE_DETACHEE">
+            <column name="reference" type="varchar(20)">
+                <constraints primaryKey="true" primaryKeyName="piece_detachee_pk"/>
+            </column>
+            <column name="libelle" type="varchar(45)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="description" type="varchar(1000)"/>
+            <column name="date" type="date">
+                <constraints nullable="false"/>
+            </column>
+            <column name="duree_de_vie" type="int">
+                <constraints nullable="false"/>
+            </column>
+            <column name="prix_achat" type="double">
+                <constraints nullable="false"/>
+            </column>
+            <column name="categorie_id" type="int">
+                <constraints nullable="false" foreignKeyName="fk_cat_piece_detachee"
+                             referencedTableName="CATEGORY_PIECE_DETACHEE" referencedColumnNames="id"/>
+            </column>
+        </createTable>
+
+        <createTable tableName="CATEGORY_MATIERE_PREMIERE">
+            <column name="id" type="int">
+                <constraints primaryKey="true" primaryKeyName="cat_matiere_premiere_pk"/>
+            </column>
+            <column name="name" type="varchar(45)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="description" type="varchar(1000)"/>
+        </createTable>
+
+        <createTable tableName="MATIERE_PREMIERE">
+            <column name="reference" type="varchar(20)">
+                <constraints primaryKey="true" primaryKeyName="matiere_premiere_pk"/>
+            </column>
+            <column name="libelle" type="varchar(45)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="description" type="varchar(1000)"/>
+            <column name="date" type="date">
+                <constraints nullable="false"/>
+            </column>
+            <column name="date_expiration" type="date">
+                <constraints nullable="false"/>
+            </column>
+            <column name="prix_achat" type="double">
+                <constraints nullable="false"/>
+            </column>
+            <column name="categorie_id" type="int">
+                <constraints nullable="false" foreignKeyName="fk_category_matiere_premiere"
+                             referencedTableName="CATEGORY_MATIERE_PREMIERE" referencedColumnNames="id"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+
+    <changeSet id="abstractFournisseur" author="rickdana">
+        <createTable tableName="FOURNISSEUR_MP">
+            <column name="id" type="varchar(45)">
+                <constraints primaryKey="true" primaryKeyName="fournisseur_mp_pk"/>
+            </column>
+            <column name="denomination" type="varchar(125)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="email" type="varchar(45)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="adresse" type="varchar(45)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="ville" type="varchar(45)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="quartier" type="varchar(45)"/>
+
+            <column name="secteur_activite" type="varchar(45)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="type" type="varchar(45)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="pays" type="varchar(45)"/>
+            <column name="telephone" type="varchar(45)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <createTable tableName="FOURNISSEUR_PD">
+            <column name="id" type="varchar(45)">
+                <constraints primaryKey="true" primaryKeyName="fournisseur_pd_pk"/>
+            </column>
+            <column name="denomination" type="varchar(125)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="email" type="varchar(45)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="adresse" type="varchar(45)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="ville" type="varchar(45)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="quartier" type="varchar(45)"/>
+
+            <column name="secteur_activite" type="varchar(45)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="type" type="varchar(45)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="pays" type="varchar(45)"/>
+            <column name="telephone" type="varchar(45)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <createTable tableName="PIECE_DETACHEE_FOURNISSEURS">
+            <column name="fournisseurs_id" type="varchar(45)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="fournisseur_piece_detachee_pk" foreignKeyName="fk_fournisseur_piece_detachee"
+                             referencedTableName="FOURNISSEUR_PD" referencedColumnNames="id"/>
+            </column>
+            <column name="piece_detachee_reference" type="varchar(20)">
+                <constraints primaryKey="true" primaryKeyName="fournisseur_piece_detachee_pk" foreignKeyName="fk_piece_detachee_reference"
+                             referencedTableName="PIECE_DETACHEE" referencedColumnNames="reference"/>
+            </column>
+        </createTable>
+
+        <createTable tableName="MATIERE_PREMIERE_FOURNISSEURS">
+            <column name="fournisseurs_id" type="varchar(45)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="fournisseur_matiere_premiere_pk" foreignKeyName="fk_fournisseur_matiere_premiere"
+                             referencedTableName="FOURNISSEUR_MP" referencedColumnNames="id"/>
+            </column>
+            <column name="matiere_premiere_reference" type="varchar(20)">
+                <constraints primaryKey="true" primaryKeyName="matiere_premiere_fournisseurs" foreignKeyName="fk_matiere_premiere_reference"
+                             referencedTableName="MATIERE_PREMIERE" referencedColumnNames="reference"/>
+            </column>
+        </createTable>
+    </changeSet>
+</databaseChangeLog>

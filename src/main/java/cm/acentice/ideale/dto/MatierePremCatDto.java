@@ -4,8 +4,6 @@ import lombok.Data;
 
 @Data
 public class MatierePremCatDto {
-
     private Long id;
-    private String type;
-
+    private String name;
 }

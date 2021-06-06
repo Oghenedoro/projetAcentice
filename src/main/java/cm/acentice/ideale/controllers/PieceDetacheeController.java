@@ -5,7 +5,6 @@ import cm.acentice.ideale.entities.PieceDetacheeCat;
 import cm.acentice.ideale.dto.PieceDetacheeCatDto;
 import cm.acentice.ideale.dto.PieceDetacheeDTO;
 import cm.acentice.ideale.services.PieceDetacheeService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.text.ParseException;
@@ -15,12 +14,16 @@ import java.util.List;
 @RestController
 public class PieceDetacheeController {
 
-    @Autowired
+    final
     PieceDetacheeService pieceDetacheeService;
+
+    public PieceDetacheeController(PieceDetacheeService pieceDetacheeService) {
+        this.pieceDetacheeService = pieceDetacheeService;
+    }
 
     @PostMapping("/v1/piece-detachees/{type}")
     public PieceDetachee createPieceDetachee(@RequestBody PieceDetachee pieceDetachee, @PathVariable String type) throws ParseException {
-        return pieceDetacheeService.createPieceDetachee(pieceDetachee, type);
+        return pieceDetacheeService.create(pieceDetachee);
     }
 
     @GetMapping("/v1/piece-detacheess/{catId}")
@@ -31,7 +34,7 @@ public class PieceDetacheeController {
     @PutMapping("/v1/piece-detachees/{ref}")
     public PieceDetachee upDatePieceDetachee(@RequestBody PieceDetacheeDTO pieceDetacheeDTO, @PathVariable String ref) throws ParseException {
 
-        return pieceDetacheeService.upDatePieceDetachee(pieceDetacheeDTO, ref);
+        return pieceDetacheeService.updatepiecedetachee(pieceDetacheeDTO, ref);
     }
 
     @GetMapping("/v1/piece-detachees/{ref}")
