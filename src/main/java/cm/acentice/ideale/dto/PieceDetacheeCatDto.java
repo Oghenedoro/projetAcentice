@@ -5,6 +5,7 @@ import lombok.Data;
 @Data
 public class PieceDetacheeCatDto {
 
-    private Long id;
-    private String type;
+    private Long idPDCat;
+    private String name;
+
 }

@@ -9,8 +9,9 @@ import org.springframework.web.bind.annotation.*;
 
 import java.text.ParseException;
 import java.util.List;
+import java.util.Set;
 
-@RequestMapping("/api")
+@RequestMapping("/v1")
 @RestController
 public class PieceDetacheeController {
 
@@ -21,53 +22,36 @@ public class PieceDetacheeController {
         this.pieceDetacheeService = pieceDetacheeService;
     }
 
-    @PostMapping("/v1/piece-detachees/{type}")
-    public PieceDetachee createPieceDetachee(@RequestBody PieceDetachee pieceDetachee, @PathVariable String type) throws ParseException {
+    @PostMapping("/piece-detachees")
+    public PieceDetachee createPieceDetachee(@RequestBody PieceDetachee pieceDetachee) throws ParseException {
         return pieceDetacheeService.create(pieceDetachee);
     }
 
-    @GetMapping("/v1/piece-detacheess/{catId}")
-    public List<PieceDetachee> getPieceDetacheeByCat(@PathVariable Long catId){
+    @RequestMapping(value = "/piece-detacheescat/{catId}", method = RequestMethod.GET)
+    public Set<PieceDetachee> getPieceDetacheeByCat(@PathVariable Long catId){
         return pieceDetacheeService.getPieceDetacheeByCat(catId);
     }
 
-    @PutMapping("/v1/piece-detachees/{ref}")
-    public PieceDetachee upDatePieceDetachee(@RequestBody PieceDetacheeDTO pieceDetacheeDTO, @PathVariable String ref) throws ParseException {
-
-        return pieceDetacheeService.updatepiecedetachee(pieceDetacheeDTO, ref);
+    @PutMapping("/piece-detachees/{id}")
+    public PieceDetachee upDatePieceDetachee(@RequestBody PieceDetacheeDTO pieceDetacheeDTO,@PathVariable String id) throws ParseException {
+        return pieceDetacheeService.updatepiecedetachee(pieceDetacheeDTO,id);
     }
 
-    @GetMapping("/v1/piece-detachees/{ref}")
+    @GetMapping("/piece-detachees/{ref}")
     public PieceDetachee getPieceDetacheeByRef(@PathVariable String ref){
-
         return pieceDetacheeService.getPieceDetacheeByReference(ref);
 
     }
 
-    @GetMapping("/v1/piece-detachees")
+    @GetMapping("/piece-detachees")
     List<PieceDetachee> getAllList(){
         return pieceDetacheeService.getAllPieceDetachee();
     }
-
-    @DeleteMapping("/v1/piece-detachees/{idMatPremier}")
+    @DeleteMapping("/piece-detachees/{idMatPremier}")
     public boolean supprimerPieceDetachee(@PathVariable String idMatPremier){
-
         pieceDetacheeService.supprimerPieceDetachee(idMatPremier);
         return true;
     }
 
-    @PostMapping("/v1/piece-categoriepd")
-    public PieceDetacheeCat createPieceDetacheeCat(@RequestBody PieceDetacheeCat pieceDetacheeCat) throws ParseException {
-        return pieceDetacheeService.createPieceDetacheeCat(pieceDetacheeCat);
-    }
 
-    @GetMapping("/v1/piece-categoriepd")
-    List<PieceDetacheeCat> getAllCat(){
-        return pieceDetacheeService.getAllCat();
-    }
-
-    @PutMapping("/v1/piece-categoriepd/{id}")
-    public PieceDetacheeCat update(@RequestBody PieceDetacheeCatDto pieceDetacheeCatDto, @PathVariable Long id) throws ParseException {
-        return pieceDetacheeService.upDatePieceDetacheeCat(pieceDetacheeCatDto, id);
-    }
 }

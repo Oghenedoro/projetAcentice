@@ -9,8 +9,6 @@ public class ResourceNotFoundException extends Exception {
         super(message, cause);
     }
 
-
-
     public ResourceNotFoundException(Throwable cause) {
         super(cause);
     }

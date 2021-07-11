@@ -158,4 +158,18 @@ http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibas
             </column>
         </createTable>
     </changeSet>
+
+    <changeSet id="contact" author="Edison">
+        <createTable tableName="CONTACT">
+            <column name="reference" type="varchar(45)">
+                <constraints primaryKey="true" primaryKeyName="reference_pk"/>
+            </column>
+            <column name="name" type="varchar(45)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="prenom" type="varchar(45)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
 </databaseChangeLog>

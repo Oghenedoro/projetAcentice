@@ -9,9 +9,11 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
 
-public class GeneratorIdPieceDetachee implements IdentifierGenerator {
+public class GeneratorIdContact implements IdentifierGenerator {
+
+
     @Override
-    public Serializable generate(SharedSessionContractImplementor session, Object object) throws HibernateException {
+    public Serializable generate(SharedSessionContractImplementor session, Object o) throws HibernateException {
 
         String prefix = "";
         String suffix = "";
@@ -20,20 +22,18 @@ public class GeneratorIdPieceDetachee implements IdentifierGenerator {
             Connection conn = session.connection();
             Statement st = conn.createStatement();
 
+            String sqlMatierePremiere = "SELECT nextval('contact_seq'); ";
+            ResultSet res = st.executeQuery(sqlMatierePremiere);
 
-            String sqlPieceDetachee = "SELECT nextval('piecedetachee_seq'); ";
+            if(res.next()) {
+                prefix = "CONTACT";
+                int seqval = res.getInt(1);
+                suffix = String.valueOf(seqval);
 
-            ResultSet res = st.executeQuery(sqlPieceDetachee);
-
-                if(res.next()) {
-                        prefix = "PDETACHEE";
-                        int seqval = res.getInt(1);
-                        suffix = String.valueOf(seqval);
-
-                }
+            }
 
         } catch (Exception e){
-          e.printStackTrace();
+            e.printStackTrace();
         }
         return prefix + suffix;
     }

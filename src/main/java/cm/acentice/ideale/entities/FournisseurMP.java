@@ -2,30 +2,32 @@ package cm.acentice.ideale.entities;
 
 import com.fasterxml.jackson.annotation.*;
 import lombok.*;
-import lombok.experimental.Accessors;
+import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
-import java.util.Collections;
-import java.util.Set;
+import java.util.Collection;
 
 @Table(name="FOURNISSEUR_MP")
 @NoArgsConstructor
 @AllArgsConstructor
-@Accessors(chain = true)
 @Entity
 @Data
-public class FournisseurMP extends AbstractFournisseur implements Fournisseur  {
+public class FournisseurMP extends Fournisseur {
 
+    @Column(name = "idFMP", length = 45)
+    @GenericGenerator(name = "FMatierePremierId", strategy = "cm.acentice.ideale.utils.GeneratorIdFournisseurMP")
+    @GeneratedValue(generator = "FMatierePremierId")
+    @Id
+    private String id;
+
+    @JsonIgnore
     @JsonManagedReference
-    @ManyToMany
-    @JoinTable(
-            name = "matiere_premiere_fournisseurs",
-            joinColumns = @JoinColumn(name = "fournisseurs_id"),
-            inverseJoinColumns = @JoinColumn(name = "matiere_premiere_reference"))
-    private Set<MatierePremiere> matierePremieres;
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "fournisseurMP")
+    private Collection<Contact> contacts;
 
-    @Override
-    public String getId() {
-        return this.id;
-    }
+    @JsonIgnore
+    @JsonManagedReference
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "fournisseurMP", cascade = CascadeType.ALL)
+    private Collection<MatierePremFournisseurMP> matierePremFournisseurMPS;
+
 }

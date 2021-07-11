@@ -26,13 +26,11 @@ public class GeneratorIdFournisseurMP implements IdentifierGenerator {
                 prefix = "F_MP";
                 int seqval = res.getInt(1);
                 suffix = String.valueOf(seqval);
-
             }
-
-        } catch (Exception e){
-            e.printStackTrace();
-        }
-        return prefix + suffix;
+            } catch (Exception e){
+                e.printStackTrace();
+            }
+          return prefix + suffix;
     }
 
 }

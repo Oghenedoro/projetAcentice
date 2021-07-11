@@ -1,13 +1,15 @@
 package cm.acentice.ideale.entities;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.GenericGenerator;
-
 import javax.persistence.*;
-import java.util.Collections;
+import java.util.List;
 import java.util.Set;
 
 @Table(name = "FOURNISSEUR_PD")
@@ -15,19 +17,25 @@ import java.util.Set;
 @AllArgsConstructor
 @Data
 @Entity
-public class FournisseurPD extends AbstractFournisseur implements Fournisseur  {
+public class FournisseurPD extends Fournisseur {
 
+    @Column(name = "idFPD",unique = true, length = 45)
+    @GenericGenerator(name = "FPieceDetacheerId", strategy = "cm.acentice.ideale.utils.GeneratorIdFournisseurPD")
+    @GeneratedValue(generator = "FPieceDetacheerId")
 
+    private String id;
+
+    @JsonIgnore
+    @JsonManagedReference
+    @OneToMany(cascade = CascadeType.MERGE, mappedBy = "fournisseurPD")
+    private List<Contact> contacts;
+
+    @JsonIgnore
     @JsonManagedReference
     @ManyToMany
     @JoinTable(
-            name = "piece_detachee_fournisseurs",
-            joinColumns = @JoinColumn(name = "fournisseurs_id"),
+            name = "piece_detachee_fournisseursPD",
+            joinColumns = @JoinColumn(name = "fournisseursPD_id"),
             inverseJoinColumns = @JoinColumn(name = "piece_detachee_reference"))
-    private Set<PieceDetachee> pieceDetachees;
-
-    @Override
-    public String getId() {
-        return this.id;
-    }
+    private List<PieceDetachee> pieceDetachees;
 }

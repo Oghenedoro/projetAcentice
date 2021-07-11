@@ -7,9 +7,7 @@ import lombok.Data;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 @Data
 @Entity
@@ -22,10 +20,13 @@ public class MatierePremiere {
     @GeneratedValue(generator = "matierPremierId")
     private String reference;
 
+    @Column(name = "idMPCat")
+    private Long idMPCat;
+
     @Column(name = "libelle", length = 45)
     private String libelle;
 
-    @Column(name = "description", length = 500)
+    @Column(name = "description", length = 1000)
     private String description;
 
     @Temporal(TemporalType.DATE)
@@ -39,8 +40,9 @@ public class MatierePremiere {
     @Column(name = "prix_achat")
     private double prixAchat;
 
-    @JsonBackReference
-    @ManyToOne(cascade = CascadeType.ALL)
-    private MatierePremiereCat categorie;
+    @JsonIgnore
+    @Column
+    @OneToMany(mappedBy = "matierePremiere", cascade = CascadeType.MERGE)
+    private Collection<MatierePremFournisseurMP> matierePremFournisseurMPS;
 
 }

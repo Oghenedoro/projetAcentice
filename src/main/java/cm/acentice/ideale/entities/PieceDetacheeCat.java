@@ -6,6 +6,7 @@ import lombok.Data;
 
 import javax.persistence.*;
 import java.util.List;
+import java.util.Set;
 
 @Data
 @Entity
@@ -13,9 +14,9 @@ import java.util.List;
 public class PieceDetacheeCat {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
-    private Long id;
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "idPDCat")
+    private Long idPDCat;
 
     @Column(name = "name", length = 45)
     private String name;
@@ -23,7 +24,9 @@ public class PieceDetacheeCat {
     @Column(name = "description", length = 500)
     private String description;
 
-    @JsonManagedReference
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "categorie", fetch = FetchType.LAZY)
-    private List<PieceDetachee> piecedetachees;
+   // @JsonManagedReference   @JoinColumn(name = "idMPCat", referencedColumnName = "idMPCat")
+    @JsonIgnore
+    @OneToMany
+    @JoinColumn(name = "idPDCat", referencedColumnName = "idPDCat")
+    private Set<PieceDetachee> piecedetachees;
 }

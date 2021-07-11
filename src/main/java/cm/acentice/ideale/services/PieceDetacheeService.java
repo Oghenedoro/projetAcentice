@@ -13,6 +13,7 @@ import java.text.ParseException;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @Service
 public class PieceDetacheeService {
@@ -26,6 +27,8 @@ public class PieceDetacheeService {
     }
 
     public PieceDetachee create(PieceDetachee pieceDetachee) {
+        Long id = pieceDetachee.getIdPDCat();
+        pieceDetachee.setIdPDCat(id);
         return pieceDetacheeRepository.save(pieceDetachee);
     }
 
@@ -39,7 +42,6 @@ public class PieceDetacheeService {
 
 
     public void supprimerPieceDetachee(String idMatPremier) {
-
         Optional<PieceDetachee> pieceDetachee = pieceDetacheeRepository.findById(idMatPremier);
         if (pieceDetachee.isEmpty()) {
             throw new RuntimeException("PieceDetachee not found !");
@@ -48,42 +50,27 @@ public class PieceDetacheeService {
     }
 
     //FIXME Service layer should handle business entities not Dto
-    public PieceDetachee updatepiecedetachee(PieceDetacheeDTO pieceDetacheeDTO, String ref) throws ParseException {
-
-        PieceDetachee pieceDetachee = pieceDetacheeRepository.findById(ref).get();
-        pieceDetachee.setReference(ref);
-        pieceDetachee.setLibelle(pieceDetacheeDTO.getLibelle());
-        pieceDetachee.setCategorie(pieceDetachee.getCategorie());
-        pieceDetachee.setDateAchat(pieceDetachee.getDateAchat());
-        pieceDetachee.setDescription(pieceDetacheeDTO.getDiscription());
-        pieceDetachee.setDureeDeVie(pieceDetacheeDTO.getDureeDeVie());
-        pieceDetachee.setPrixAchat(pieceDetacheeDTO.getPrixDachat());
-
+    public PieceDetachee updatepiecedetachee(PieceDetacheeDTO pieceDetacheeDTO,String id) throws ParseException {
+       PieceDetachee pieceDetachee = pieceDetacheeRepository.findById(id).get();
+       if(pieceDetachee != null) pieceDetachee.setReference(pieceDetachee.getReference());
+       pieceDetachee.setIdPDCat(pieceDetacheeDTO.getIdPDCat());
+       pieceDetachee.setDateAchat(pieceDetacheeDTO.getDateAchat());
+       pieceDetachee.setDescription(pieceDetacheeDTO.getDescription());
+       pieceDetachee.setLibelle(pieceDetacheeDTO.getLibelle());
+       pieceDetachee.setDureeDeVie(pieceDetacheeDTO.getDureeDeVie());
+       pieceDetachee.setPrixAchat(pieceDetacheeDTO.getPrixAchat());
         return pieceDetacheeRepository.save(pieceDetachee);
     }
 
     //FIXME Create a method getPieceDetacheeByCategory in the PieceDetacheeRepository
-    public List<PieceDetachee> getPieceDetacheeByCat(Long catId) {
+    public Set<PieceDetachee> getPieceDetacheeByCat(Long catId) {
         PieceDetacheeCat pieceDetacheeCat = detacheeCatRepository.findById(catId).get();
-        List<PieceDetachee> pieceDetachees = pieceDetacheeCat.getPiecedetachees();
+        Set<PieceDetachee> pieceDetachees = pieceDetacheeCat.getPiecedetachees();
         return pieceDetachees;
-    }
-
-    //Lagestion des catégories
-    public PieceDetacheeCat createPieceDetacheeCat(PieceDetacheeCat pieceDetacheeCat) {
-        return detacheeCatRepository.save(pieceDetacheeCat);
     }
 
     public List<PieceDetacheeCat> getAllCat() {
         return detacheeCatRepository.findAll();
     }
 
-    public PieceDetacheeCat upDatePieceDetacheeCat(PieceDetacheeCatDto pieceDetacheeCatDto, Long id) throws ParseException {
-
-        PieceDetacheeCat pieceDetacheeCat = detacheeCatRepository.findById(id).get();
-        pieceDetacheeCat.setId(pieceDetacheeCat.getId());
-        pieceDetacheeCat.setName(pieceDetacheeCatDto.getType());
-
-        return detacheeCatRepository.save(pieceDetacheeCat);
-    }
 }

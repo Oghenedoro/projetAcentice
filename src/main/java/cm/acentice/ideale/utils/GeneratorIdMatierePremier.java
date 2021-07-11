@@ -21,7 +21,7 @@ public class GeneratorIdMatierePremier implements IdentifierGenerator {
             Connection conn = session.connection();
             Statement st = conn.createStatement();
 
-            String sqlMatierePremiere = "SELECT nextval('reference_mp_seq'); ";
+            String sqlMatierePremiere = "SELECT nextval('matierepremiere_seq'); ";
              ResultSet res = st.executeQuery(sqlMatierePremiere);
 
             if(res.next()) {

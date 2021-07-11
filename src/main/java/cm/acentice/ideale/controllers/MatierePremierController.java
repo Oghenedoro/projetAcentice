@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.text.ParseException;
 import java.util.List;
+import java.util.Set;
 
 @RequestMapping("/v1")
 @RestController
@@ -18,14 +19,21 @@ public class MatierePremierController {
 
     final MatierePremiereService matierePremiereService;
 
+
     public MatierePremierController(MatierePremiereService matierePremiereService) {
         this.matierePremiereService = matierePremiereService;
     }
 
+    //@RequestMapping(value = "/matieres-premieres", method = RequestMethod.POST)
     @PostMapping("/matieres-premieres")
     public MatierePremiere createMatPremier(@RequestBody MatierePremiere matierePremiere) throws ParseException {
         return matierePremiereService.create(matierePremiere);
     }
+    @GetMapping("/matieres-premierescat/{catId}")
+    public List<MatierePremiere> getMatirePremiereByCat(@PathVariable Long catId) {
+        return matierePremiereService.getMatirePremiereByCat(catId);
+    }
+
 
     @GetMapping("/matieres-premieres")
     List<MatierePremiere> getAllList() {
@@ -42,30 +50,9 @@ public class MatierePremierController {
     public MatierePremiere getMatremiereByRef(@PathVariable String reference) throws ResourceNotFoundException {
         return matierePremiereService.getMatierePremiereByReference(reference);
     }
-
-    @GetMapping("matieres-premieress/{catId}")
-    public List<MatierePremiere> getMatierePremierByCat(@PathVariable Long catId) {
-        return matierePremiereService.getMatirePremiereByCat(catId);
+    @RequestMapping(value = "/matieres-premieres/{id}", method = RequestMethod.PUT)
+    public MatierePremiere upDateMatPremier(@RequestBody MatierePremDto matierePremDto,@PathVariable String id) throws ParseException {
+        return matierePremiereService.update(matierePremDto,id);
     }
 
-    @PutMapping("/matieres-premieres/{reference}")
-    public MatierePremiere upDateMatPremier(@RequestBody MatierePremDto matierePremDto, @PathVariable String reference) throws ParseException {
-        return matierePremiereService.update(matierePremDto, reference);
-    }
-
-
-    @PostMapping("/matieres-categoriemp")
-    public MatierePremiereCat createMatierePremiereCat(@RequestBody MatierePremiereCat matierePremiereCat) throws ParseException {
-        return matierePremiereService.createMatierePremiereCat(matierePremiereCat);
-    }
-
-    @GetMapping("/matieres-categoriemp")
-    List<MatierePremiereCat> getAllCat() {
-        return matierePremiereService.getAllCat();
-    }
-
-    @PutMapping("/matieres-categoriemp/{id}")
-    public MatierePremiereCat update(@RequestBody MatierePremCatDto matierePremCatDto, @PathVariable Long id) throws ParseException {
-        return matierePremiereService.upDateMatPremierCat(matierePremCatDto, id);
-    }
 }
