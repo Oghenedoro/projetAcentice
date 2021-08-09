@@ -20,8 +20,8 @@ public class ApprovisionnementMatieresPremieresDto {
     private double tauxTVA;
     private String devise;
     private String libelle;
-    private MatierePremiere matierePremiere;
-    private User user;
+    //private MatierePremiere matierePremiere;
+    //private User user;
     private SiteDeProduction siteDeProduction;
     private List<ApprovHasMatierePremiere> approvHasMatierePremieres;
 

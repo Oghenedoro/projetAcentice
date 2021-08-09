@@ -1,5 +1,6 @@
 package cm.acentice.ideale.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -29,13 +30,18 @@ public class SiteDeProduction {
     private String telephone;
     private String telephone2;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "siteDeProduction",cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List <ApprovisionnementMatieresPremieres> approvisionnementMatieresPremieres;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "siteDeProduction",cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List <HistoriqueStockProduitsFinis> historiqueStockProduitsFinis;
-
+    @JsonIgnore
     @OneToMany(mappedBy = "siteDeProduction",cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List <ProductionProduitFinis> productionProduitFinis;
+
+    @OneToMany(mappedBy = "siteDeProduction",cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+    private List<ApprovisionnementProduitFinis>approvisionnementProduitFinisList;
 
 }

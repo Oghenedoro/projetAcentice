@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 @RequestMapping(value = "/v1")
 @RestController
 public class StockMatierePremiereCtlr {
@@ -22,8 +24,8 @@ public class StockMatierePremiereCtlr {
     List<StockMatierePremiere> consulterTousStockMP() {
         return approvisionnementMPService.consulterTousStockMP();
     }*/
-    @RequestMapping(value = "/stockmatierepm", method = RequestMethod.GET)
-    public ResponseEntity<String> getStockMatierePremiere() throws JsonProcessingException {
-            return stockMatierePremiereService.getStockMatierePremiere();
+    @RequestMapping(value = "/stockmatierepremiers", method = RequestMethod.GET)
+    public List<StockMatierePremiere> getAllMatierPremier(){
+            return stockMatierePremiereService.getAll();
         }
     }

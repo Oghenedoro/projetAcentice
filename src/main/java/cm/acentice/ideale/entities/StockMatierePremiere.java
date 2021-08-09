@@ -23,10 +23,6 @@ public class StockMatierePremiere {
     @GeneratedValue(generator = "stockmpId")
     @Id
     private String idStockMP;
-
-    @ManyToOne(fetch = FetchType.LAZY,cascade = CascadeType.MERGE)
-    @JoinColumn(name = "idMP",referencedColumnName = "reference")
-    private MatierePremiere matierePremiere;
     private String Libelle;
     private String description;
     private int quantite;
@@ -34,6 +30,11 @@ public class StockMatierePremiere {
     @Column(name = "Date_derniere_MAJ")
     @Temporal(TemporalType.TIMESTAMP)
     private Date dateDerniereMaj;
+
+    @JsonIgnore
+    @ManyToOne(fetch = FetchType.LAZY,cascade = CascadeType.MERGE)
+    @JoinColumn(name = "idMP",referencedColumnName = "reference")
+    private MatierePremiere matierePremiere;
 
     @Override
     public boolean equals(Object o) {

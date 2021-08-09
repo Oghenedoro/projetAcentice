@@ -51,6 +51,6 @@ public class MatierePremiere {
     @OneToMany(mappedBy = "matierePremiere",cascade = CascadeType.ALL,fetch = FetchType.LAZY)
     private Collection<StockMatierePremiere> stockMatierePremieres;
 
-    @OneToMany(mappedBy = "matierePremiere",cascade = CascadeType.MERGE,fetch = FetchType.LAZY)
-    private Collection<ApprovisionnementMatieresPremieres> approvisionnementMatieresPremieres;
+    /*@OneToMany(mappedBy = "matierePremiere",cascade = CascadeType.MERGE,fetch = FetchType.LAZY)
+    private Collection<ApprovisionnementMatieresPremieres> approvisionnementMatieresPremieres;*/
 }

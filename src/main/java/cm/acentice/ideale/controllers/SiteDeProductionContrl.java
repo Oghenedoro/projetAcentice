@@ -1,11 +1,12 @@
 package cm.acentice.ideale.controllers;
 
 import cm.acentice.ideale.entities.SiteDeProduction;
+import cm.acentice.ideale.exceptions.ResourceNotFoundException;
 import cm.acentice.ideale.services.SiteDeProductionService;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.Optional;
 
 @RequestMapping(value = "/v1")
 @RestController
@@ -22,5 +23,12 @@ public class SiteDeProductionContrl {
     public SiteDeProduction create(@RequestBody SiteDeProduction siteDeProduction){
         return siteDeProductionService.create(siteDeProduction);
     }
-
+    @RequestMapping(value = "/siteproductions", method = RequestMethod.GET)
+    public List<SiteDeProduction> findAll(){
+        return siteDeProductionService.findAll();
+    }
+    @RequestMapping(value = "/siteproductions/{idSiteProduction}", method = RequestMethod.GET)
+    public Optional<SiteDeProduction> findById(@PathVariable Long idSiteProduction) throws ResourceNotFoundException {
+        return siteDeProductionService.findById(idSiteProduction);
+    }
 }
