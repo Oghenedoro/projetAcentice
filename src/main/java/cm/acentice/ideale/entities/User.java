@@ -43,9 +43,6 @@ public class User {
     @OneToMany(mappedBy = "user",cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<HistoriqueStockProduitsFinis> inventaireProduitsFinis;
 
-    @OneToMany(mappedBy = "user",cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<ApprovisionnementMatieresPremieres>approvisionnementMatieresPremieres;
-
     @OneToMany(mappedBy = "user",cascade = CascadeType.ALL,fetch = FetchType.LAZY)
     private List<ApprovisionnementProduitFinis>approvisionnementProduitFinisList;
 }

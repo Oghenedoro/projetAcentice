@@ -40,6 +40,9 @@ public class MatierePremiere {
     @Column(name = "prix_achat")
     private double prixAchat;
 
+    @Transient
+    private int quantiteMP;
+
     @JsonIgnore
     @Column
     @OneToMany(mappedBy = "matierePremiere", cascade = CascadeType.MERGE)

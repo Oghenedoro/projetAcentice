@@ -6,11 +6,9 @@ import cm.acentice.ideale.entities.ApprovisionnementMatieresPremieres;
 import cm.acentice.ideale.entities.ProductionProduitFinis;
 import cm.acentice.ideale.entities.SiteDeProduction;
 import cm.acentice.ideale.entities.StockMatierePremiere;
+import cm.acentice.ideale.exceptions.ResourceNotFoundException;
 import cm.acentice.ideale.services.ApprovisionnementMPService;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.text.ParseException;
 import java.util.Date;
@@ -26,9 +24,9 @@ public class ApprovisionnementMatieresPremieresCtrl {
         this.approvisionnementMPService = approvisionnementMPService;
     }
 
-    @RequestMapping(value = "/approvisionnement/matierepremieres", method = RequestMethod.POST)
-    public void create(@RequestBody ApprovisionnementMatieresPremieresDto appMatieresPremieresDto) throws ParseException {
-         approvisionnementMPService.create(appMatieresPremieresDto);
+    @RequestMapping(value = "/approvisionnement/matierepremieres/{idSiteProd}", method = RequestMethod.POST)
+    public void create(@RequestBody ApprovisionnementMatieresPremieresDto appMatieresPremieresDto, @PathVariable Long idSiteProd) throws ParseException, ResourceNotFoundException {
+         approvisionnementMPService.create(appMatieresPremieresDto,idSiteProd);
     }
     @RequestMapping(value = "/approvisionnement/matierepremieres", method = RequestMethod.GET)
     public List<ApprovisionnementMatieresPremieres> getAll(){

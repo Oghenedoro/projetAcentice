@@ -19,6 +19,7 @@ public class MatierePremDto {
     private Date dateAchat;
     private Date expirationDate;
     private double prixAchat;
+    private int quantiteMP;
     private List<FournisseurMP> fournisseurMPs;
 
 }

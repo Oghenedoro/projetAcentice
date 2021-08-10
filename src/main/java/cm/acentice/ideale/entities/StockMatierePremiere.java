@@ -23,8 +23,8 @@ public class StockMatierePremiere {
     @GeneratedValue(generator = "stockmpId")
     @Id
     private String idStockMP;
-    private String Libelle;
-    private String description;
+   // private String Libelle;
+  //  private String description;
     private int quantite;
     private int quantité_Min;
     @Column(name = "Date_derniere_MAJ")
@@ -41,11 +41,11 @@ public class StockMatierePremiere {
         if (this == o) return true;
         if (!(o instanceof StockMatierePremiere)) return false;
         StockMatierePremiere that = (StockMatierePremiere) o;
-        return quantite == that.quantite && quantité_Min == that.quantité_Min && idStockMP.equals(that.idStockMP) && matierePremiere.equals(that.matierePremiere) && Libelle.equals(that.Libelle) && description.equals(that.description) && dateDerniereMaj.equals(that.dateDerniereMaj);
+        return quantite == that.quantite && quantité_Min == that.quantité_Min && Objects.equals(idStockMP, that.idStockMP) && Objects.equals(dateDerniereMaj, that.dateDerniereMaj) && Objects.equals(matierePremiere, that.matierePremiere);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(idStockMP, matierePremiere, Libelle, description, quantite, quantité_Min, dateDerniereMaj);
+        return Objects.hash(idStockMP, quantite, quantité_Min, dateDerniereMaj, matierePremiere);
     }
 }

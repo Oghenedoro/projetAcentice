@@ -15,10 +15,12 @@ public class ApprovHasMatierePremiere {
 
     @Id  @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    @Column(name = "quantité_MP_Approv")
-    private int quantitéMPApprove;
-
+    private double prixUitaireTTC;
+    private double prixUnitaireHT;
+    private double tauxTVA;
+    private double montantTVA;
+    private double montantTTC;
+    private int quantite;
     @ManyToOne
     @JoinColumn(name = "id_MP",referencedColumnName = "reference")
     private MatierePremiere matierePremiere;

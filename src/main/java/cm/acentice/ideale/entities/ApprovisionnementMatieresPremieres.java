@@ -28,20 +28,12 @@ public class ApprovisionnementMatieresPremieres {
     //@DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME, pattern = "yyyy-MM-dd")
     @Temporal(TemporalType.TIMESTAMP)
     private Date  dateApprovisionnement;
-    private String description;
-    @Column(name = "Prix_Unitaire_HT")
+   /* @Column(name = "Prix_Unitaire_HT")
     private double prixUnitaireHT;
-    @Column(name = "Prix_Unitaire_TTC")
-    private double prixUnitaireTTC;
     @Column(name = "MONTANT_TVA")
     private double montantTVA;
-    private double tauxTVA;
+    private double tauxTVA;*/
     private String devise;
-    private String libelle;
-    @JsonIgnore
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "Id_Utilisateur")
-    private User user;
     @JsonIgnore
     @ManyToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name = "Id_Site_production")
@@ -51,8 +43,4 @@ public class ApprovisionnementMatieresPremieres {
     @OneToMany(cascade = CascadeType.ALL,mappedBy = "approvisionnementMatieresPremiere")
     private List<ApprovHasMatierePremiere> approvHasMatierePremieres;
 
-   /* @JsonIgnore
-    @ManyToOne
-    @JoinColumn(name = "refMP")
-    private MatierePremiere matierePremiere;*/
 }
