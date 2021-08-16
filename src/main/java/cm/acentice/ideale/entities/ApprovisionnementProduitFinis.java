@@ -37,10 +37,6 @@ public class ApprovisionnementProduitFinis {
     private List<ApprovissionnementPFHasProduit>approvissionnementPFHasProduits;
 
     @ManyToOne
-    @JoinColumn(name = "idProduit")
-    private Produit produit;
-
-    @ManyToOne
     @JoinColumn(name = "idUser")
     private User user;
 }

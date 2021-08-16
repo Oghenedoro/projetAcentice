@@ -2,16 +2,12 @@ package cm.acentice.ideale.controllers;
 
 import cm.acentice.ideale.dto.ApprovisionnementMatieresPremieresDto;
 import cm.acentice.ideale.dto.DateDto;
-import cm.acentice.ideale.entities.ApprovisionnementMatieresPremieres;
-import cm.acentice.ideale.entities.ProductionProduitFinis;
-import cm.acentice.ideale.entities.SiteDeProduction;
-import cm.acentice.ideale.entities.StockMatierePremiere;
+import cm.acentice.ideale.entities.*;
 import cm.acentice.ideale.exceptions.ResourceNotFoundException;
 import cm.acentice.ideale.services.ApprovisionnementMPService;
 import org.springframework.web.bind.annotation.*;
 
 import java.text.ParseException;
-import java.util.Date;
 import java.util.List;
 
 @RequestMapping(value = "/v1")
@@ -36,5 +32,9 @@ public class ApprovisionnementMatieresPremieresCtrl {
     @RequestMapping(value = "/approvisionnement/matierepremieres/dates", method = RequestMethod.POST)
     public List<ApprovisionnementMatieresPremieres> getDataBetweenDates(@RequestBody DateDto dateDto){
         return approvisionnementMPService.getDataBetweenDates(dateDto.getStartDate(),dateDto.getEndDate());
+    }
+    @RequestMapping(value = "/approvisionnement/historiques", method = RequestMethod.GET)
+    public List<HistoriqueStockApprovMPPD> getAllHistory(){
+        return approvisionnementMPService.getAllHistorique();
     }
 }

@@ -15,6 +15,7 @@ public class HistoriqueStockProduitsFinis {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
     private Long refArticle;
     private String typeMouvement;
     private int ancienneValeurStock;

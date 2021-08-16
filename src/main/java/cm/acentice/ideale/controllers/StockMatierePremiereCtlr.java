@@ -1,5 +1,6 @@
 package cm.acentice.ideale.controllers;
 
+import cm.acentice.ideale.entities.MatierePremiere;
 import cm.acentice.ideale.entities.StockMatierePremiere;
 import cm.acentice.ideale.services.StockMatierePremiereService;
 import com.fasterxml.jackson.core.JsonProcessingException;

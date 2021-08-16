@@ -15,6 +15,7 @@ public class ProductionProduitFinis {
 
    @Id
    @GeneratedValue(strategy = GenerationType.IDENTITY)
+   private Long id;
    private Long refProduitsFinis;
    private Date dateHeureDebutProduction;
    private Date dateHeureFinProduction;

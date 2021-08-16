@@ -22,17 +22,15 @@ public class Produit {
     private String description;
     private String couleur;
     private Date datePeremption;
+    @Transient
+    private int quantiteFabrique;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "")
-    @JoinColumn(name = "produit")
+    @OneToMany(mappedBy = "produit",cascade = CascadeType.ALL,fetch = FetchType.LAZY)
     private List<StockProduitFinis> stockProduitFinisList;
 
     @JsonIgnore
     @OneToMany(mappedBy = "produit",cascade = CascadeType.ALL,fetch = FetchType.LAZY)
     private List<ApprovissionnementPFHasProduit>approvissionnementPFHasProduits;
-
-    @OneToMany(mappedBy = "produit",cascade = CascadeType.ALL,fetch = FetchType.LAZY)
-    private List<ApprovisionnementProduitFinis>approvisionnementPFList;
 
 }

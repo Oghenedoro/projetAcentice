@@ -15,7 +15,7 @@ public class ApprovissionnementPFHasProduit {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private int quantiteApprouve;
+    private int quantiteFabrique;
 
     @ManyToOne
     @JoinColumn(name = "idAprovisionnment")
