@@ -18,7 +18,7 @@ public class ApprovisionnementMatieresPremieresDto {
     private double montantTVA;
     private double tauxTVA;
     private String devise;
-    private SiteDeProduction siteDeProduction;
+    private Long idSiteDeProduction;
     private List<ApprovHasMatierePremiere> approvHasMatiereList = new ArrayList<>();
 
 }

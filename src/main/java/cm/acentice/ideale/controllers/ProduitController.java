@@ -1,12 +1,10 @@
 package cm.acentice.ideale.controllers;
 
 import cm.acentice.ideale.entities.Produit;
+import cm.acentice.ideale.exceptions.ResourceNotFoundException;
 import cm.acentice.ideale.repositories.ProduitRepos;
 import cm.acentice.ideale.services.ProduitService;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -19,9 +17,9 @@ public class ProduitController {
     public ProduitController(ProduitRepos produitRepos, ProduitService produitService) {
         this.produitService = produitService;
     }
-    @RequestMapping(value = "/produits", method = RequestMethod.POST)
-    public Produit create(@RequestBody Produit produit){
-        return produitService.create(produit);
+    @RequestMapping(value = "/produits/{idProdProduitFinis}", method = RequestMethod.POST)
+    public Produit create(@RequestBody Produit produit, @PathVariable Long idProdProduitFinis) throws ResourceNotFoundException {
+        return produitService.create(produit,idProdProduitFinis);
     }
 
     @RequestMapping(value = "/produits", method = RequestMethod.GET)

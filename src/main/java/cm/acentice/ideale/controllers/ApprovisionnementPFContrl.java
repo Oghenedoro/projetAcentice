@@ -15,8 +15,8 @@ private final ApprovisionnementPFService approvisionnementPFService;
     public ApprovisionnementPFContrl(ApprovisionnementPFService approvisionnementPFService) {
         this.approvisionnementPFService = approvisionnementPFService;
     }
-    @RequestMapping(value = "/approvisionnement/produitfinis/{idSiteDeVente}", method = RequestMethod.POST)
-    public void create(@RequestBody ApprovisionnementProduitFinisDto approvisionnementPFDto, @PathVariable Long idSiteDeVente) throws ResourceNotFoundException {
-         approvisionnementPFService.create(approvisionnementPFDto,idSiteDeVente);
+    @RequestMapping(value = "/approvisionnement/produitfinis", method = RequestMethod.POST)
+    public void create(@RequestBody ApprovisionnementProduitFinisDto approvisionnementPFDto) throws ResourceNotFoundException {
+         approvisionnementPFService.create(approvisionnementPFDto);
     }
 }

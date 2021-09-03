@@ -20,9 +20,9 @@ public class ApprovisionnementMatieresPremieresCtrl {
         this.approvisionnementMPService = approvisionnementMPService;
     }
 
-    @RequestMapping(value = "/approvisionnement/matierepremieres/{idSiteProd}", method = RequestMethod.POST)
-    public void create(@RequestBody ApprovisionnementMatieresPremieresDto appMatieresPremieresDto, @PathVariable Long idSiteProd) throws ParseException, ResourceNotFoundException {
-         approvisionnementMPService.create(appMatieresPremieresDto,idSiteProd);
+    @RequestMapping(value = "/approvisionnement/matierepremieres", method = RequestMethod.POST)
+    public void create(@RequestBody ApprovisionnementMatieresPremieresDto appMatieresPremieresDto) throws ParseException, ResourceNotFoundException {
+         approvisionnementMPService.create(appMatieresPremieresDto);
     }
     @RequestMapping(value = "/approvisionnement/matierepremieres", method = RequestMethod.GET)
     public List<ApprovisionnementMatieresPremieres> getAll(){

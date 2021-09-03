@@ -31,7 +31,7 @@ public class StockProduitFinis {
     @Column(name = "Date_derniere_MAJ")
     private LocalDate dateDerniereMaj;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name = "refProduit",referencedColumnName = "id")
     private Produit produit;
 

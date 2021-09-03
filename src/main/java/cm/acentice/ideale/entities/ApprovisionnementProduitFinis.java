@@ -1,5 +1,6 @@
 package cm.acentice.ideale.entities;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -7,6 +8,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Table(name = "Approvisionnement_Produit_Finis")
@@ -21,9 +23,10 @@ public class ApprovisionnementProduitFinis {
     @Column(name = "RECEPTIONNIST",length = 45)
     private String receptionist;
 
-    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME, pattern = "yyyy-MM-dd")
+    //@DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME, pattern = "yyyy-MM-dd")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm")
     @Column(name = "DATE_APPROVISIONNEMENT")
-    private LocalDate dateApprovisionnement;
+    private LocalDateTime dateApprovisionnement;
 
     @ManyToOne
     @JoinColumn(name = "idSiteDeVente")

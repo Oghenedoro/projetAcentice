@@ -34,14 +34,14 @@ public class SiteDeProduction {
     @OneToMany(mappedBy = "siteDeProduction",cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List <ApprovisionnementMatieresPremieres> approvisionnementMatieresPremieres;
 
-    @JsonIgnore
+   /* @JsonIgnore
     @OneToMany(mappedBy = "siteDeProduction",cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List <HistoriqueStockProduitsFinis> historiqueStockProduitsFinis;
+    private List <HistoriqueStockProduitsFinis> historiqueStockProduitsFinis;*/
     @JsonIgnore
     @OneToMany(mappedBy = "siteDeProduction",cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List <ProductionProduitFinis> productionProduitFinis;
 
-    @OneToMany(mappedBy = "siteDeProduction",cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+   /* @OneToMany(mappedBy = "siteDeProduction",cascade = CascadeType.ALL,fetch = FetchType.LAZY)
     private List<ApprovisionnementProduitFinis>approvisionnementProduitFinisList;
-
+*/
 }

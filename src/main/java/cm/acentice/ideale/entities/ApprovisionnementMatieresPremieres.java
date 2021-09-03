@@ -28,11 +28,6 @@ public class ApprovisionnementMatieresPremieres {
     //@DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME, pattern = "yyyy-MM-dd")
     @Temporal(TemporalType.TIMESTAMP)
     private Date  dateApprovisionnement;
-   /* @Column(name = "Prix_Unitaire_HT")
-    private double prixUnitaireHT;
-    @Column(name = "MONTANT_TVA")
-    private double montantTVA;
-    private double tauxTVA;*/
     private String devise;
     @JsonIgnore
     @ManyToOne(cascade = CascadeType.MERGE)

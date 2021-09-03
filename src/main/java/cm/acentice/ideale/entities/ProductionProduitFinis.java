@@ -1,11 +1,15 @@
 package cm.acentice.ideale.entities;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
-import java.util.Date;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+
 
 @Data
 @NoArgsConstructor
@@ -16,9 +20,13 @@ public class ProductionProduitFinis {
    @Id
    @GeneratedValue(strategy = GenerationType.IDENTITY)
    private Long id;
-   private Long refProduitsFinis;
-   private Date dateHeureDebutProduction;
-   private Date dateHeureFinProduction;
+   private String refProduitsFinis;
+
+   @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm")
+   private LocalDateTime dateHeureDebutProduction;
+   @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm")
+   private LocalDateTime dateHeureFinProduction;
+
    private String refMatierePremiere;
    private int quantitéMatPremiereUtilisée;
    private double poidsBobine;
@@ -40,3 +48,4 @@ public class ProductionProduitFinis {
    @JoinColumn(name = "idSiteProduction")
    private SiteDeProduction siteDeProduction;
 }
+

@@ -14,15 +14,12 @@ import java.util.List;
 @AllArgsConstructor
 @Entity
 public class Produit {
-
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private String id;
     private double poids;
     private String description;
     private String couleur;
     private Date datePeremption;
-    @Transient
     private int quantiteFabrique;
 
     @JsonIgnore

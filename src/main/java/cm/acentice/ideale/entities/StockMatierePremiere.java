@@ -30,22 +30,25 @@ public class StockMatierePremiere {
     @Column(name = "Date_derniere_MAJ")
     @Temporal(TemporalType.TIMESTAMP)
     private Date dateDerniereMaj;
+    private String refMP;
 
-    @JsonIgnore
+   /* @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY,cascade = CascadeType.MERGE)
-    @JoinColumn(name = "idMP",referencedColumnName = "reference")
+    @JoinColumn(name = "idMP",referencedColumnName = "reference")*/
+   /* @Transient
     private MatierePremiere matierePremiere;
+*/
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof StockMatierePremiere)) return false;
         StockMatierePremiere that = (StockMatierePremiere) o;
-        return quantite == that.quantite && quantité_Min == that.quantité_Min && Objects.equals(idStockMP, that.idStockMP) && Objects.equals(dateDerniereMaj, that.dateDerniereMaj) && Objects.equals(matierePremiere, that.matierePremiere);
+        return quantite == that.quantite && quantité_Min == that.quantité_Min && Objects.equals(idStockMP, that.idStockMP) && Objects.equals(dateDerniereMaj, that.dateDerniereMaj) && Objects.equals(refMP, that.refMP);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(idStockMP, quantite, quantité_Min, dateDerniereMaj, matierePremiere);
+        return Objects.hash(idStockMP, quantite, quantité_Min, dateDerniereMaj, refMP);
     }
 }

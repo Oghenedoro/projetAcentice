@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.util.Date;
 
 @Table(name = "HISTORIQUE_APPROV_MP_PD")
@@ -24,6 +25,7 @@ public class HistoriqueStockApprovMPPD {
     private int ancienneValeurStock;
     private int quantitéModifiee;
     private int nouvelleValeurStock;
-    private Date dateMAJ;
+    private LocalDate dateMAJ;
+    private Long idSiteDeProduction;
    // private Long idUser;
 }

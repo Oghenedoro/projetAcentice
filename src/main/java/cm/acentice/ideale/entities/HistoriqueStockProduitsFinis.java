@@ -16,7 +16,7 @@ public class HistoriqueStockProduitsFinis {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private Long refArticle;
+    private String refArticle;
     private String typeMouvement;
     private int ancienneValeurStock;
     private int quantiteModifiee;
@@ -27,9 +27,8 @@ public class HistoriqueStockProduitsFinis {
     @JoinColumn(name = "idUser")
     private User user;
 
-    @ManyToOne
-    @JoinColumn(name = "idSitePrroduction")
-    private SiteDeProduction siteDeProduction;
-
+  /*  @ManyToOne
+    @JoinColumn(name = "idSitePrroduction")*/
+    private Long idSiteDeProduction;
     private Long idSiteVente;
 }

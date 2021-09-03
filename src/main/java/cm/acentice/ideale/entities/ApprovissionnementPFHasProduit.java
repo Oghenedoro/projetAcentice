@@ -21,7 +21,7 @@ public class ApprovissionnementPFHasProduit {
     @JoinColumn(name = "idAprovisionnment")
     private ApprovisionnementProduitFinis approvisionnementProduitFinis;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name = "idProduit")
     private Produit produit;
 

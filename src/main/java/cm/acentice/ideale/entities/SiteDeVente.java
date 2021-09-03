@@ -39,7 +39,7 @@ public class SiteDeVente {
     @JoinColumn(name = "idStockProduitFinis")
     private StockProduitFinis stockProduitFinis;
 */
-    @OneToMany(mappedBy = "siteDeVente",cascade = CascadeType.ALL,fetch = FetchType.LAZY)
-    private List<ApprovisionnementProduitFinis>approvisionnementProduitFinisList;
+   /* @OneToMany(mappedBy = "siteDeVente",cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+    private List<ApprovisionnementProduitFinis>approvisionnementProduitFinisList;*/
 
 }

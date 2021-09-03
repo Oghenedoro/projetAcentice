@@ -6,12 +6,14 @@ import cm.acentice.ideale.dto.DateDto;
 import cm.acentice.ideale.entities.*;
 import cm.acentice.ideale.exceptions.ResourceNotFoundException;
 import cm.acentice.ideale.repositories.*;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.*;
 
 @Service
@@ -22,62 +24,70 @@ public class ApprovisionnementMPService {
     private final MatierePremiereRepository matierePremiereRepository;
     private final SiteDeProductionRepos siteDeProductionRepos;
     private final HistoriqueStockApproMPPDRepos historiqueStockApproMPPDRepos;
+    private final ApprovHasMatierePremiereRep approvHasMatierePremiereRep;
+    private final ModelMapper modelMapper;
 
     @Autowired
-    public ApprovisionnementMPService(ApprovisionnementMatieresPremieresRep approvisionnementMatieresPremieresRep, StockMatierePremiereRep stockMatierePremiereRep, MatierePremiereRepository matierePremiereRepository, SiteDeProductionRepos siteDeProductionRepos, HistoriqueStockApproMPPDRepos historiqueStockApproMPPDRepos) {
+    public ApprovisionnementMPService(ApprovisionnementMatieresPremieresRep approvisionnementMatieresPremieresRep, StockMatierePremiereRep stockMatierePremiereRep, MatierePremiereRepository matierePremiereRepository, SiteDeProductionRepos siteDeProductionRepos, HistoriqueStockApproMPPDRepos historiqueStockApproMPPDRepos, ApprovHasMatierePremiereRep approvHasMatierePremiereRep, ModelMapper modelMapper) {
         this.approvisionnementMatieresPremieresRep = approvisionnementMatieresPremieresRep;
         this.stockMatierePremiereRep = stockMatierePremiereRep;
         this.matierePremiereRepository = matierePremiereRepository;
         this.siteDeProductionRepos = siteDeProductionRepos;
         this.historiqueStockApproMPPDRepos = historiqueStockApproMPPDRepos;
+        this.approvHasMatierePremiereRep = approvHasMatierePremiereRep;
+        this.modelMapper = modelMapper;
     }
 
     @Transactional
-    public void create(ApprovisionnementMatieresPremieresDto appMatieresPremieresDto, Long idSiteProd) throws ParseException, ResourceNotFoundException {
+    public void create(ApprovisionnementMatieresPremieresDto appMatieresPremieresDto) throws ParseException, ResourceNotFoundException {
         ApprovisionnementMatieresPremieres matieresPremieres = new ApprovisionnementMatieresPremieres();
-        Optional<SiteDeProduction> siteDeProduction = siteDeProductionRepos.findById(idSiteProd);
-        if (!siteDeProduction.isPresent()){
-            throw new ResourceNotFoundException("SiteDeProduction non trouvé !");
-        }
         String datePartern = "yyyy-MM-dd:HH:mm";
         SimpleDateFormat sdf = new SimpleDateFormat(datePartern);
         String dateAppr = sdf.format(new Date());
         matieresPremieres.setDateApprovisionnement(sdf.parse(dateAppr));
         matieresPremieres.setDevise(appMatieresPremieresDto.getDevise());
-        matieresPremieres.setSiteDeProduction(appMatieresPremieresDto.getSiteDeProduction());
-        matieresPremieres.setApprovHasMatierePremieres(appMatieresPremieresDto.getApprovHasMatiereList());
-        List<ApprovHasMatierePremiere> premiereList = appMatieresPremieresDto.getApprovHasMatiereList();
+
+        Long id = appMatieresPremieresDto.getIdSiteDeProduction();
+        Optional<SiteDeProduction> siteDeProduction = siteDeProductionRepos.findById(id);
+        if (!siteDeProduction.isPresent()){
+            throw new ResourceNotFoundException("SiteDeProduction non trouvé !");
+        }
         matieresPremieres.setSiteDeProduction(siteDeProduction.get());
+        List<ApprovHasMatierePremiere> premiereList = appMatieresPremieresDto.getApprovHasMatiereList();
         matieresPremieres.setApprovHasMatierePremieres(premiereList);
         double tauxTva = appMatieresPremieresDto.getTauxTVA() / 100 + 1;
 
-        matierePremiereRepository.findAll().forEach(matierepremiere -> {
           premiereList.forEach(aprovHasMP ->{
           MatierePremiere matierePMSaisi = aprovHasMP.getMatierePremiere();
+          MatierePremiere matierePremiere = matierePremiereRepository.findById(matierePMSaisi.getReference()).get();
 
-      if(matierepremiere.getReference().equals(matierePMSaisi.getReference())) {
-          aprovHasMP.setMatierePremiere(matierepremiere);
+          aprovHasMP.setMatierePremiere(matierePremiere);
           aprovHasMP.setApprovisionnementMatieresPremiere(matieresPremieres);
           int quantite = matierePMSaisi.getQuantiteMP();
-          double prixUnitaireHT = matierepremiere.getPrixAchat();
+          double prixUnitaireHT = matierePremiere.getPrixAchat();
           double prixUnitaireTTC = tauxTva * prixUnitaireHT;
           double montantTVA = prixUnitaireTTC * quantite;
           double montantTTC = prixUnitaireHT * quantite;
           aprovHasMP.setMontantTTC(montantTTC);
-          aprovHasMP.setQuantite(matierePMSaisi.getQuantiteMP());
+          aprovHasMP.setQuantite(quantite);
           aprovHasMP.setTauxTVA(tauxTva);
           aprovHasMP.setPrixUnitaireHT(prixUnitaireHT);
           aprovHasMP.setPrixUitaireTTC(prixUnitaireTTC);
           aprovHasMP.setMontantTVA(montantTVA);
 
-          if (stockMatierePremiereRep.findByMatierePremiere(matierePMSaisi) == null) {
-              createStockMatierePremiere(matierePMSaisi);
-              }else if (stockMatierePremiereRep.findByMatierePremiere(matierePMSaisi) != null){
-              updateStockMatierePremiere(matierePMSaisi);
+          StockMatierePremiere stockMatierePremiere = stockMatierePremiereRep.findByRefMP(matierePremiere.getReference());
+
+          if (stockMatierePremiereRep.findByRefMP(matierePremiere.getReference()) == null) {
+              createStockMatierePremiere(matierePMSaisi,matieresPremieres);
+              }else if (stockMatierePremiereRep.findByRefMP(matierePremiere.getReference()) != null){
+              try {
+                  updateStockMatierePremiere(matierePMSaisi,matieresPremieres);
+              } catch (ResourceNotFoundException e) {
+                  e.getMessage();
               }
-           }
+             }
          });
-      });
+
         approvisionnementMatieresPremieresRep.save(matieresPremieres);
      }
 
@@ -93,10 +103,10 @@ public class ApprovisionnementMPService {
             return listData;
         }
 
-        public void createStockMatierePremiere(MatierePremiere matierePremiere){
+        private void createStockMatierePremiere(MatierePremiere matierePremiere,ApprovisionnementMatieresPremieres matieresPremieres){
             StockMatierePremiere stockMatierePremiere = new StockMatierePremiere();
             stockMatierePremiere.setQuantite(matierePremiere.getQuantiteMP());
-            stockMatierePremiere.setMatierePremiere(matierePremiere);
+            stockMatierePremiere.setRefMP(matierePremiere.getReference());
             String pattern = "yyyy-MM-dd:HH:mm";
             SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
             String date = simpleDateFormat.format(new Date());
@@ -106,24 +116,27 @@ public class ApprovisionnementMPService {
                 e.printStackTrace();
             }
             stockMatierePremiere.setQuantité_Min(10);
-            createtHistoriqueStock(stockMatierePremiere,matierePremiere);
+
             stockMatierePremiereRep.save(stockMatierePremiere);
+            createtHistoriqueStock(stockMatierePremiere,matierePremiere,matieresPremieres);
         }
 
-      public void updateStockMatierePremiere(MatierePremiere matierePremiere){
-          StockMatierePremiere stockMP = stockMatierePremiereRep.findByMatierePremiere(matierePremiere);
+    private void updateStockMatierePremiere(MatierePremiere matierePremiere,ApprovisionnementMatieresPremieres matieresPremieres) throws ResourceNotFoundException {
+
+          StockMatierePremiere stockMP = stockMatierePremiereRep.findByRefMP(matierePremiere.getReference());
           stockMP.setIdStockMP(stockMP.getIdStockMP());
           int quantiteStock = stockMP.getQuantite();
           int quantiteApprovisionner = matierePremiere.getQuantiteMP();
           stockMP.setQuantite(quantiteApprovisionner + quantiteStock);
-          createtHistoriqueStock(stockMP,matierePremiere);
+          createtHistoriqueStock(stockMP,matierePremiere,matieresPremieres);
           stockMatierePremiereRep.save(stockMP);
      }
 
-     public HistoriqueStockApprovMPPD createtHistoriqueStock(StockMatierePremiere stockMatierePremiere, MatierePremiere matierePremiere){
+    private HistoriqueStockApprovMPPD createtHistoriqueStock(StockMatierePremiere stockMatierePremiere, MatierePremiere matierePremiere,
+                                                             ApprovisionnementMatieresPremieres matieresPremieres){
          HistoriqueStockApprovMPPD historiqueStockApproMPPD = new HistoriqueStockApprovMPPD();
          historiqueStockApproMPPD.setTypeMouvement(TypeMovementStock.ENTREE.name());
-         historiqueStockApproMPPD.setDateMAJ(new Date());
+         historiqueStockApproMPPD.setDateMAJ(LocalDate.now());
          historiqueStockApproMPPD.setRefArticle(matierePremiere.getReference());
          int nouvelleValeur = stockMatierePremiere.getQuantite();
          int quantiteApprovissionnee = matierePremiere.getQuantiteMP();
@@ -131,6 +144,10 @@ public class ApprovisionnementMPService {
          int ancienValeur = nouvelleValeur - quantiteApprovissionnee;
          historiqueStockApproMPPD.setAncienneValeurStock(ancienValeur);
          historiqueStockApproMPPD.setQuantitéModifiee(quantiteApprovissionnee);
+
+        SiteDeProduction siteDeProduction = matieresPremieres.getSiteDeProduction();
+        historiqueStockApproMPPD.setIdSiteDeProduction(siteDeProduction.getId());
+
          return historiqueStockApproMPPDRepos.save(historiqueStockApproMPPD);
 
      }
