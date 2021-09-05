@@ -30,5 +30,5 @@ public class HistoriqueStockProduitsFinis {
   /*  @ManyToOne
     @JoinColumn(name = "idSitePrroduction")*/
     private Long idSiteDeProduction;
-    private Long idSiteVente;
+    private String idSiteVente;
 }

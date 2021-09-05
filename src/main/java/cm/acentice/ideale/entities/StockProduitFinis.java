@@ -35,6 +35,7 @@ public class StockProduitFinis {
     @JoinColumn(name = "refProduit",referencedColumnName = "id")
     private Produit produit;
 
-   /* @OneToMany(mappedBy = "stockProduitFinis", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private List<SiteDeVente>siteDeVentes;*/
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "idSiteDeVente")
+    private SiteDeVente siteDeVente;
 }

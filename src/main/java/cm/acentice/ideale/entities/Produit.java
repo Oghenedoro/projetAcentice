@@ -30,4 +30,9 @@ public class Produit {
     @OneToMany(mappedBy = "produit",cascade = CascadeType.ALL,fetch = FetchType.LAZY)
     private List<ApprovissionnementPFHasProduit>approvissionnementPFHasProduits;
 
+   /* @JsonIgnore
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "idSiteDeVente")
+    private SiteDeVente siteDeVente;*/
+
 }

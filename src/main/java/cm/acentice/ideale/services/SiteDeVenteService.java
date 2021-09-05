@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class SiteDeVenteService {
@@ -20,6 +21,7 @@ public class SiteDeVenteService {
     }
 
     public SiteDeVente create(SiteDeVente siteDeVente){
+        siteDeVente.setId(UUID.randomUUID().toString());
         return siteDeVenteRepos.save(siteDeVente);
     }
 

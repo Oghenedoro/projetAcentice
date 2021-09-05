@@ -2,6 +2,7 @@ package cm.acentice.ideale.controllers;
 
 import cm.acentice.ideale.dto.ApprovisionnementProduitFinisDto;
 import cm.acentice.ideale.entities.ApprovisionnementProduitFinis;
+import cm.acentice.ideale.exceptions.ResourceExisteDejaException;
 import cm.acentice.ideale.exceptions.ResourceNotFoundException;
 import cm.acentice.ideale.services.ApprovisionnementPFService;
 import org.springframework.web.bind.annotation.*;
@@ -16,7 +17,7 @@ private final ApprovisionnementPFService approvisionnementPFService;
         this.approvisionnementPFService = approvisionnementPFService;
     }
     @RequestMapping(value = "/approvisionnement/produitfinis", method = RequestMethod.POST)
-    public void create(@RequestBody ApprovisionnementProduitFinisDto approvisionnementPFDto) throws ResourceNotFoundException {
+    public void create(@RequestBody ApprovisionnementProduitFinisDto approvisionnementPFDto) throws ResourceNotFoundException, ResourceExisteDejaException {
          approvisionnementPFService.create(approvisionnementPFDto);
     }
 }

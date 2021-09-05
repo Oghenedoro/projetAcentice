@@ -11,10 +11,10 @@ public class ApprovisionnementProduitFinisDto {
     private Long id;
     private String receptionist;
     private LocalDate dateApprovisionnement;
-    private Long idFiteDeVente;
+    private String idSiteDeVente;
     private Long idSiteDeProduction;
     private Produit produit;
     private List<ApprovissionnementPFHasProduit>approvissionnementPFHasProduits;
-    private User user;
+    private Long  userId;
 
 }

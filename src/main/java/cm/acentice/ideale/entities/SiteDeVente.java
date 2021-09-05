@@ -15,8 +15,7 @@ import java.util.List;
 public class SiteDeVente {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private String id;
     @Column(name = "NOM",length = 45)
     private String nom;
     @Column(name = "TELEPHONE",length = 45)
@@ -35,11 +34,13 @@ public class SiteDeVente {
     private String compteMatricule;
 
 
-   /* @ManyToOne
-    @JoinColumn(name = "idStockProduitFinis")
-    private StockProduitFinis stockProduitFinis;
-*/
-   /* @OneToMany(mappedBy = "siteDeVente",cascade = CascadeType.ALL,fetch = FetchType.LAZY)
-    private List<ApprovisionnementProduitFinis>approvisionnementProduitFinisList;*/
+    @OneToMany(mappedBy = "siteDeVente",cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+    private List <StockProduitFinis> stockProduitFinis;
 
+    @OneToMany(mappedBy = "siteDeVente",cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+    private List<ApprovisionnementProduitFinis>approvisionnementProduitFinisList;
+
+   /* @OneToMany
+    @JoinColumn(name = "id", referencedColumnName = "id")
+    private List<Produit> produits;*/
 }
