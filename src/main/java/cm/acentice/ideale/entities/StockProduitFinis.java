@@ -20,10 +20,6 @@ public class StockProduitFinis {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-   /* @Column(name = "LIBELLE",length = 45)
-    private String libellé;
-    @Column(name = "DESCRIPTION",length = 45)
-    private String description;*/
     private int quantite;
     private int quantite_Min;
 
@@ -35,7 +31,11 @@ public class StockProduitFinis {
     @JoinColumn(name = "refProduit",referencedColumnName = "id")
     private Produit produit;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+   /* @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "idSiteDeVente")
-    private SiteDeVente siteDeVente;
+    private SiteDeVente siteDeVente;*/
+
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "idSiteDeProduction")
+    private SiteDeProduction siteDeProduction;
 }

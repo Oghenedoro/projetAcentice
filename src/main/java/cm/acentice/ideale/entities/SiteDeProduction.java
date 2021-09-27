@@ -41,6 +41,10 @@ public class SiteDeProduction {
     @OneToMany(mappedBy = "siteDeProduction",cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List <ProductionProduitFinis> productionProduitFinis;
 
+    @JsonIgnore
+    @OneToMany(mappedBy = "siteDeProduction",cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List <StockProduitFinis> stockProduitFinis;
+
    /* @OneToMany(mappedBy = "siteDeProduction",cascade = CascadeType.ALL,fetch = FetchType.LAZY)
     private List<ApprovisionnementProduitFinis>approvisionnementProduitFinisList;
 */

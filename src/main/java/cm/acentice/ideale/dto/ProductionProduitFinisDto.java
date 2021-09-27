@@ -1,24 +1,19 @@
 package cm.acentice.ideale.dto;
 
-import cm.acentice.ideale.entities.SiteDeProduction;
+import cm.acentice.ideale.entities.ProduitHasMatierePremier;
 import lombok.Data;
-
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.Date;
+import java.util.List;
 
 @Data
 public class ProductionProduitFinisDto {
 
     private Long id;
-   // private Long refProduitsFinis;
     private String refProduitsFinis;
     private LocalDateTime dateHeureDebutProduction;
     private LocalDateTime dateHeureFinProduction;
     private String refMatierePremiere;
-    private int quantitéMatPremiereUtilisée;
     private double poidsBobine;
-    private int quantitéProduitsFinis;
     private String refProduitsFinisDefectueux;
     private int quantitéProduitsFinisDefectueux;
     private  String commentaires;
@@ -26,4 +21,6 @@ public class ProductionProduitFinisDto {
     private String releveCompteurFinKwh;
     private Long idAgentProduction;
     private Long idSiteDeProduction;
+    List<ProduitHasMatierePremier> produitHasMatierePremiers;
+
 }

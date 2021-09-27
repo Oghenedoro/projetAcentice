@@ -20,7 +20,6 @@ public class Produit {
     private String description;
     private String couleur;
     private Date datePeremption;
-    private int quantiteFabrique;
 
     @JsonIgnore
     @OneToMany(mappedBy = "produit",cascade = CascadeType.ALL,fetch = FetchType.LAZY)
@@ -29,6 +28,12 @@ public class Produit {
     @JsonIgnore
     @OneToMany(mappedBy = "produit",cascade = CascadeType.ALL,fetch = FetchType.LAZY)
     private List<ApprovissionnementPFHasProduit>approvissionnementPFHasProduits;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "produit",cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+    private List<ProduitHasMatierePremier>produitHasMatierePremiers;
+    @Transient
+    private int quantiteFabrique;
 
    /* @JsonIgnore
     @ManyToOne(cascade = CascadeType.ALL)

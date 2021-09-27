@@ -75,8 +75,6 @@ public class ApprovisionnementMPService {
           aprovHasMP.setPrixUitaireTTC(prixUnitaireTTC);
           aprovHasMP.setMontantTVA(montantTVA);
 
-          StockMatierePremiere stockMatierePremiere = stockMatierePremiereRep.findByRefMP(matierePremiere.getReference());
-
           if (stockMatierePremiereRep.findByRefMP(matierePremiere.getReference()) == null) {
               createStockMatierePremiere(matierePMSaisi,matieresPremieres);
               }else if (stockMatierePremiereRep.findByRefMP(matierePremiere.getReference()) != null){

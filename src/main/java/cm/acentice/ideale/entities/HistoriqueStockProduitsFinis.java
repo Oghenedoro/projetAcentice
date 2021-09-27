@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.util.Date;
 
 @Data
@@ -21,7 +22,7 @@ public class HistoriqueStockProduitsFinis {
     private int ancienneValeurStock;
     private int quantiteModifiee;
     private int nouvelleValeurStock;
-    private Date dateMAJ;
+    private LocalDate dateMAJ;
 
     @ManyToOne
     @JoinColumn(name = "idUser")
@@ -30,5 +31,5 @@ public class HistoriqueStockProduitsFinis {
   /*  @ManyToOne
     @JoinColumn(name = "idSitePrroduction")*/
     private Long idSiteDeProduction;
-    private String idSiteVente;
+   // private String idSiteVente;
 }

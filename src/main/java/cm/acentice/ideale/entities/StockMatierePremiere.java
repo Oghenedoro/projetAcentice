@@ -23,8 +23,6 @@ public class StockMatierePremiere {
     @GeneratedValue(generator = "stockmpId")
     @Id
     private String idStockMP;
-   // private String Libelle;
-  //  private String description;
     private int quantite;
     private int quantité_Min;
     @Column(name = "Date_derniere_MAJ")

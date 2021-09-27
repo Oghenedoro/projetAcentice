@@ -97,7 +97,7 @@ public class ApprovisionnementPFService {
         stockProduitFinis.setDateDerniereMaj(LocalDate.now());
         String id = approvisionnementPF.getIdSiteDeVente();
         SiteDeVente siteDeVente = siteDeVenteRepos.findById(id).get();
-        stockProduitFinis.setSiteDeVente(siteDeVente);
+       // stockProduitFinis.setSiteDeVente(siteDeVente);
         int quantiteFabrique = produit.getQuantiteFabrique();
         stockProduitFinis.setQuantite(quantiteFabrique);
         stockProduitFinisRepos.save(stockProduitFinis);
@@ -107,14 +107,14 @@ public class ApprovisionnementPFService {
         ApprovisionnementProduitFinisDto approvisionnementPF){
         HistoriqueStockProduitsFinis historiqueStockProduitsFinis = new HistoriqueStockProduitsFinis();
         historiqueStockProduitsFinis.setTypeMouvement(TypeMovementStock.ENTREE.name());
-        historiqueStockProduitsFinis.setDateMAJ(new Date());
+        historiqueStockProduitsFinis.setDateMAJ(LocalDate.now());
         historiqueStockProduitsFinis.setRefArticle(produit.getId());
         int quantiteFabrique = produit.getQuantiteFabrique();
         int ancientQty = historiqueStockProduitsFinis.getAncienneValeurStock();
         historiqueStockProduitsFinis.setNouvelleValeurStock(ancientQty + quantiteFabrique);
         historiqueStockProduitsFinis.setQuantiteModifiee(quantiteFabrique);
         historiqueStockProduitsFinis.setIdSiteDeProduction(approvisionnementPF.getIdSiteDeProduction());
-        historiqueStockProduitsFinis.setIdSiteVente(approvisionnementPF.getIdSiteDeVente());
+        //historiqueStockProduitsFinis.setIdSiteVente(approvisionnementPF.getIdSiteDeVente());
         Long id = approvisionnementPF.getUserId();
         User user = userRepos.findById(id).get();
         historiqueStockProduitsFinis.setUser(user);

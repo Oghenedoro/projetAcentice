@@ -34,9 +34,9 @@ public class SiteDeVente {
     private String compteMatricule;
 
 
-    @OneToMany(mappedBy = "siteDeVente",cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+   /* @OneToMany(mappedBy = "siteDeVente",cascade = CascadeType.ALL,fetch = FetchType.LAZY)
     private List <StockProduitFinis> stockProduitFinis;
-
+*/
     @OneToMany(mappedBy = "siteDeVente",cascade = CascadeType.ALL,fetch = FetchType.LAZY)
     private List<ApprovisionnementProduitFinis>approvisionnementProduitFinisList;
 

@@ -51,6 +51,8 @@ public class MatierePremiere {
     @OneToMany(mappedBy = "matierePremiere",cascade = CascadeType.ALL,fetch = FetchType.LAZY)
     private List<ApprovHasMatierePremiere>approvHasMatierePremieres;
 
+    /*@OneToMany(mappedBy = "matierePremiere",cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+    private List<ProduitHasMatierePremier>produitHasMatierePremiers;*/
    /* @OneToMany(mappedBy = "matierePremiere",cascade = CascadeType.ALL,fetch = FetchType.LAZY)
     private Collection<StockMatierePremiere> stockMatierePremieres;
 */

@@ -1,5 +1,6 @@
 package cm.acentice.ideale.controllers;
 
+import cm.acentice.ideale.dto.ProduitDto;
 import cm.acentice.ideale.entities.Produit;
 import cm.acentice.ideale.exceptions.ResourceNotFoundException;
 import cm.acentice.ideale.repositories.ProduitRepos;
@@ -17,9 +18,9 @@ public class ProduitController {
     public ProduitController(ProduitRepos produitRepos, ProduitService produitService) {
         this.produitService = produitService;
     }
-    @RequestMapping(value = "/produits/{idProdProduitFinis}", method = RequestMethod.POST)
-    public Produit create(@RequestBody Produit produit, @PathVariable Long idProdProduitFinis) throws ResourceNotFoundException {
-        return produitService.create(produit,idProdProduitFinis);
+    @RequestMapping(value = "/produits", method = RequestMethod.POST)
+    public ProduitDto create(@RequestBody ProduitDto produitDto) throws ResourceNotFoundException {
+        return produitService.create(produitDto);
     }
 
     @RequestMapping(value = "/produits", method = RequestMethod.GET)
