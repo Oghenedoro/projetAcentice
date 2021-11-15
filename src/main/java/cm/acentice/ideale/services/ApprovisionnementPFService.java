@@ -94,7 +94,7 @@ public class ApprovisionnementPFService {
         StockProduitFinis stockProduitFinis = new StockProduitFinis();
         stockProduitFinis.setProduit(produit);
         stockProduitFinis.setQuantite_Min(10);
-        stockProduitFinis.setDateDerniereMaj(LocalDate.now());
+        stockProduitFinis.setDateDerniereMaj(LocalDateTime.now());
         String id = approvisionnementPF.getIdSiteDeVente();
         SiteDeVente siteDeVente = siteDeVenteRepos.findById(id).get();
        // stockProduitFinis.setSiteDeVente(siteDeVente);
@@ -107,7 +107,7 @@ public class ApprovisionnementPFService {
         ApprovisionnementProduitFinisDto approvisionnementPF){
         HistoriqueStockProduitsFinis historiqueStockProduitsFinis = new HistoriqueStockProduitsFinis();
         historiqueStockProduitsFinis.setTypeMouvement(TypeMovementStock.ENTREE.name());
-        historiqueStockProduitsFinis.setDateMAJ(LocalDate.now());
+        historiqueStockProduitsFinis.setDateMAJ(LocalDateTime.now());
         historiqueStockProduitsFinis.setRefArticle(produit.getId());
         int quantiteFabrique = produit.getQuantiteFabrique();
         int ancientQty = historiqueStockProduitsFinis.getAncienneValeurStock();

@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Data @NoArgsConstructor @AllArgsConstructor
 @Entity
@@ -14,9 +15,10 @@ public class ProduitHasMatierePremier {
     private Long idProdHasMP;
     private int quantitéProduitsFinis;
     private int quantitéMPUtilise;
-    @ManyToOne
-    @JoinColumn(name = "refMP",referencedColumnName = "reference")
-    private MatierePremiere matierePremiere;
+    private String refMP;
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
+    @JoinColumn(name = "idProdHasMP")
+    private List<MatierePremiere> matierePremieres;
     @ManyToOne
     @JoinColumn(name = "idProduit",referencedColumnName = "id")
     private Produit produit;

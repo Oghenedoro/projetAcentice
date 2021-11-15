@@ -6,7 +6,6 @@ import cm.acentice.ideale.dto.DateDto;
 import cm.acentice.ideale.entities.*;
 import cm.acentice.ideale.exceptions.ResourceNotFoundException;
 import cm.acentice.ideale.repositories.*;
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,17 +24,15 @@ public class ApprovisionnementMPService {
     private final SiteDeProductionRepos siteDeProductionRepos;
     private final HistoriqueStockApproMPPDRepos historiqueStockApproMPPDRepos;
     private final ApprovHasMatierePremiereRep approvHasMatierePremiereRep;
-    private final ModelMapper modelMapper;
 
     @Autowired
-    public ApprovisionnementMPService(ApprovisionnementMatieresPremieresRep approvisionnementMatieresPremieresRep, StockMatierePremiereRep stockMatierePremiereRep, MatierePremiereRepository matierePremiereRepository, SiteDeProductionRepos siteDeProductionRepos, HistoriqueStockApproMPPDRepos historiqueStockApproMPPDRepos, ApprovHasMatierePremiereRep approvHasMatierePremiereRep, ModelMapper modelMapper) {
+    public ApprovisionnementMPService(ApprovisionnementMatieresPremieresRep approvisionnementMatieresPremieresRep, StockMatierePremiereRep stockMatierePremiereRep, MatierePremiereRepository matierePremiereRepository, SiteDeProductionRepos siteDeProductionRepos, HistoriqueStockApproMPPDRepos historiqueStockApproMPPDRepos, ApprovHasMatierePremiereRep approvHasMatierePremiereRep) {
         this.approvisionnementMatieresPremieresRep = approvisionnementMatieresPremieresRep;
         this.stockMatierePremiereRep = stockMatierePremiereRep;
         this.matierePremiereRepository = matierePremiereRepository;
         this.siteDeProductionRepos = siteDeProductionRepos;
         this.historiqueStockApproMPPDRepos = historiqueStockApproMPPDRepos;
         this.approvHasMatierePremiereRep = approvHasMatierePremiereRep;
-        this.modelMapper = modelMapper;
     }
 
     @Transactional

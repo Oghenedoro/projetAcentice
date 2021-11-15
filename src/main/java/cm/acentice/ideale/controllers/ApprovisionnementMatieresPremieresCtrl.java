@@ -29,10 +29,10 @@ public class ApprovisionnementMatieresPremieresCtrl {
         return approvisionnementMPService.getAll();
     }
 
-    @RequestMapping(value = "/approvisionnement/matierepremieres/dates", method = RequestMethod.POST)
+    /*@RequestMapping(value = "/approvisionnement/matierepremieres/dates", method = RequestMethod.POST)
     public List<ApprovisionnementMatieresPremieres> getDataBetweenDates(@RequestBody DateDto dateDto){
         return approvisionnementMPService.getDataBetweenDates(dateDto.getStartDate(),dateDto.getEndDate());
-    }
+    }*/
     @RequestMapping(value = "/approvisionnement/historiques", method = RequestMethod.GET)
     public List<HistoriqueStockApprovMPPD> getAllHistory(){
         return approvisionnementMPService.getAllHistorique();

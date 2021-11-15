@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -71,18 +72,25 @@ public class ProductionProduitFinisService {
         ProductionProduitFinis fProduitFinis = produitFinis;
         produitHasMatierePremiers.forEach(phasMp ->{
             phasMp.setProductionProduitFinis(fProduitFinis);
-            MatierePremiere matierePremiere = phasMp.getMatierePremiere();
-            Produit produit = phasMp.getProduit();
+            List<MatierePremiere> matierePremieres = phasMp.getMatierePremieres();
 
-            refMP = matierePremiere.getReference();
-            if(refMP == null){
-                try {
-                    throw new ResourceNotFoundException("MatierePremiere reference non trouvé !");
-                } catch (ResourceNotFoundException e) {
-                    e.getMessage();
+            matierePremieres.forEach(matierePremiere ->{
+                int quantiteMPUtilise = 0;
+                refMP = matierePremiere.getReference();
+                phasMp.setRefMP(refMP);
+                 quantiteMPUtilise += matierePremiere.getQuantiteMP();
+
+                phasMp.setQuantitéMPUtilise(quantiteMPUtilise);
+                if(refMP == null){
+                    try {
+                        throw new ResourceNotFoundException("MatierePremiere reference non trouvé !");
+                    } catch (ResourceNotFoundException e) {
+                        e.getMessage();
+                    }
+                    return;
                 }
-                return;
-            }
+            });
+            Produit produit = phasMp.getProduit();
             idProduit = produit.getId();
             if(idProduit == null){
                 try {
@@ -91,12 +99,12 @@ public class ProductionProduitFinisService {
                     e.getMessage();
                 }
             }
-            int quantiteMPUtilise = matierePremiere.getQuantiteMP();
+
             int quantiteProduitsFabrique = produit.getQuantiteFabrique();
 
-            phasMp.setMatierePremiere(matierePremiere);
+            phasMp.setMatierePremieres(matierePremieres);
             phasMp.setProduit(produit);
-            phasMp.setQuantitéMPUtilise(quantiteMPUtilise);
+
             phasMp.setQuantitéProduitsFinis(quantiteProduitsFabrique);
 
             if (stockProduitFinisRepos.findByProduit(produit) == null){
@@ -120,14 +128,29 @@ public class ProductionProduitFinisService {
     private void createtHistoriqueStockMP(ProductionProduitFinisDto produitFinisDto) throws ResourceNotFoundException {
         produitFinisDto.getProduitHasMatierePremiers().forEach(prodHasMP -> {
             HistoriqueStockApprovMPPD histApprovMP = new HistoriqueStockApprovMPPD();
-            String refMatPrem = prodHasMP.getMatierePremiere().getReference();
-            if (stockMatierePremiereRep.findByRefMP(refMatPrem) == null) {
-                try {
-                    throw new ResourceNotFoundException("Aucun stock associé à cette matiere Premiere !");
-                } catch (ResourceNotFoundException e) {
-                    e.getMessage();
+
+            List<MatierePremiere> matierePremieres = prodHasMP.getMatierePremieres();
+            matierePremieres.forEach(matierePremiere -> {
+                String refMatPrem = matierePremiere.getReference();
+                StockMatierePremiere stockMatiereP = stockMatierePremiereRep.findByRefMP(refMatPrem);
+                int quantiteStockMP = stockMatiereP.getQuantite();
+                int quantiteMPUtilise = matierePremiere.getQuantiteMP();
+                int nouvelleValeur = quantiteStockMP - quantiteMPUtilise;
+                stockMatiereP.setQuantite(nouvelleValeur);
+                histApprovMP.setNouvelleValeurStock(nouvelleValeur);
+                histApprovMP.setQuantitéModifiee(quantiteMPUtilise);
+                histApprovMP.setAncienneValeurStock(quantiteStockMP);
+                histApprovMP.setRefArticle(stockMatiereP.getRefMP());
+
+                if (stockMatierePremiereRep.findByRefMP(refMatPrem) == null) {
+                    try {
+                        throw new ResourceNotFoundException("Aucun stock associé à cette matiere Premiere !");
+                    } catch (ResourceNotFoundException e) {
+                        e.getMessage();
+                    }
                 }
-            }
+            });
+
             Long id = produitFinisDto.getIdSiteDeProduction();
             Optional<SiteDeProduction> siteDeProduction = siteDeProductionRepos.findById(id);
             if(!siteDeProduction.isPresent()){
@@ -138,18 +161,8 @@ public class ProductionProduitFinisService {
                 }
             }
             histApprovMP.setIdSiteDeProduction(id);
-            StockMatierePremiere stockMatiereP = stockMatierePremiereRep.findByRefMP(refMatPrem);
-            int quantiteStockMP = stockMatiereP.getQuantite();
-            int quantiteMPUtilise = prodHasMP.getMatierePremiere().getQuantiteMP();
-            int nouvelleValeur = quantiteStockMP - quantiteMPUtilise;
-            stockMatiereP.setQuantite(nouvelleValeur);
-            histApprovMP.setNouvelleValeurStock(nouvelleValeur);
-            histApprovMP.setQuantitéModifiee(quantiteMPUtilise);
-
             histApprovMP.setTypeMouvement(TypeMovementStock.SORTIE.name());
-            histApprovMP.setAncienneValeurStock(quantiteStockMP);
             histApprovMP.setDateMAJ(LocalDate.now());
-            histApprovMP.setRefArticle(stockMatiereP.getRefMP());
             historiqueStockApproMPPDRepos.save(histApprovMP);
         });
 
@@ -175,7 +188,7 @@ public class ProductionProduitFinisService {
             historiqueStockProduitsFinis.setTypeMouvement(TypeMovementStock.ENTREE.name());
             historiqueStockProduitsFinis.setAncienneValeurStock(historiqueStockProduitsFinis.getAncienneValeurStock());
 
-            historiqueStockProduitsFinis.setDateMAJ(LocalDate.now());
+            historiqueStockProduitsFinis.setDateMAJ(LocalDateTime.now());
             historiqueStockProduitsFinisRepos.save(historiqueStockProduitsFinis);
         });
 
@@ -185,7 +198,7 @@ public class ProductionProduitFinisService {
         StockProduitFinis stockProduitFinis = new StockProduitFinis();
         stockProduitFinis.setProduit(produit);
         stockProduitFinis.setQuantite_Min(10);
-        stockProduitFinis.setDateDerniereMaj(LocalDate.now());
+        stockProduitFinis.setDateDerniereMaj(LocalDateTime.now());
         Long id = produitFinisDto.getIdSiteDeProduction();
         SiteDeProduction siteDeProduction = siteDeProductionRepos.findById(id).get();
         stockProduitFinis.setSiteDeProduction(siteDeProduction);

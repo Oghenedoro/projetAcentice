@@ -27,5 +27,4 @@ public class HistoriqueStockApprovMPPD {
     private int nouvelleValeurStock;
     private LocalDate dateMAJ;
     private Long idSiteDeProduction;
-   // private Long idUser;
 }
