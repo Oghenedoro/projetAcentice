@@ -1,56 +1,51 @@
 package cm.acentice.ideale.services;
 
-import cm.acentice.ideale.constants.CommandeStatut;
-import cm.acentice.ideale.dto.StockVirtuelDto;
 import cm.acentice.ideale.entities.*;
-import cm.acentice.ideale.exceptions.ResourceNotFoundException;
 import cm.acentice.ideale.interfaces.DataPMapper;
 import cm.acentice.ideale.interfaces.StockVirtuelInt;
+import cm.acentice.ideale.models.StockVituel;
 import cm.acentice.ideale.repositories.*;
 import lombok.Builder;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @Builder
 @RequiredArgsConstructor
 @Service
 public class StockVirtuelService implements StockVirtuelInt {
 
-    private final StockVirtuelRepos stockVirtuelRepos;
     private final DataPMapper dataPMapper;
     private final CommandeRepository commandeRepository;
-    private final LigneDeCommandeRepos ligneDeCommandeRepos;
+    private final LivraisonRepos livraisonRepos;
     private final ProduitRepos produitRepos;
     private final StockProduitFinisRepos stockProduitFinisRepos;
 
     @Override
-    public StockVirtuelDto create(StockVirtuelDto stockVirtuelDto) throws ResourceNotFoundException {
+    public List<String> checkStockWithCommande(StockVituel vituel) {
+        List<String> stringList = new ArrayList<>();
+        String res = null;
 
-        StockVirtuel stockVirtuel = dataPMapper.mapFromStockVirtuelDto_toStockVirtuel(stockVirtuelDto);
-        stockVirtuel.setCommandeStatut(CommandeStatut.STOCK_NON_VALIDEE);
-        int qteCommandee = stockVirtuel.getQuantiteCommandee();
-        int qteLivrer = stockVirtuel.getQuantiteLivre();
+        int quantiteRestant = 0;
 
-        stockVirtuel.setQuantiteCommandee(qteCommandee);
-        stockVirtuel.setQuantiteLivre(qteLivrer);
-        stockVirtuel.setQuantiteStockRestanteAlivrer(qteCommandee - qteLivrer);
+        for (String refProd : vituel.getRefProduits()) {
+            Produit produit = produitRepos.findById(refProd).get();
+            List<Livraison> livraisons = livraisonRepos.findByRefProduit(refProd);
 
-        Optional<Commande> commande = commandeRepository.findById(stockVirtuel.getIdCommande());
-        if(!commande.isPresent()){
-            throw new ResourceNotFoundException("Commande non trouvé !");
+            for (Livraison livraison : livraisons) {
+                quantiteRestant = livraison.getQuantiteRestante();
+                StockProduitFinis stockProduitFinis = stockProduitFinisRepos.findByProduit(produit);
+               int quantiteEnStock = stockProduitFinis.getQuantite();
+
+                int diff = quantiteEnStock - quantiteRestant;
+                if (quantiteEnStock < quantiteRestant) {
+                    stringList.add("-KO- " + "Le stock reference " + refProd + " est inférieur avec " + diff + " quantites");
+                } else if (quantiteEnStock >= quantiteRestant) {
+                    stringList.add("-OK- " + "Le stock reference " + refProd + " est disponible avec " + diff + " quantites");
+                }
+            }
         }
-        stockVirtuel.setIdCommande(commande.get().getIdCommande());
-        stockVirtuel.setDate(LocalDateTime.now());
-        stockVirtuel = stockVirtuelRepos.save(stockVirtuel);
-        StockVirtuelDto stockVirtuelDto1 = dataPMapper.mapFromStockVirtuel_toStockVirtuelDto(stockVirtuel);
-
-        return stockVirtuelDto1;
+        return stringList;
     }
 }

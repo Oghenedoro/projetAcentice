@@ -21,6 +21,7 @@ public class HistoriqueStockProduitsFinis {
     private String refArticle;
     private String typeMouvement;
     private int ancienneValeurStock;
+    @Column(name = "QUANTITE_TOTALE_MODIFIEE")
     private int quantiteModifiee;
     private int nouvelleValeurStock;
     private LocalDateTime dateMAJ;

@@ -9,6 +9,6 @@ import java.util.List;
 
 public interface LigneDeCommandeRepos extends JpaRepository<LigneDeCommande, Long> {
     LinkedList<LigneDeCommande> findByRefProduit(String refProduit);
-    List<LigneDeCommande>findByCommande(Commande commande);
-
+    List<LigneDeCommande>findByCommandeAndRefProduit(Commande commande,String refProduit);
+    List<LigneDeCommande> findByCommande(Commande commande);
 }

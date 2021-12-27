@@ -26,12 +26,12 @@ public class CommandeService implements CommandeInterface {
     private final UserRepos userRepos;
     private final HistoriqueStockProduitsFinisRepos historiqueStockProduitsFinisRepos;
     private final ClientRepository clientRepository;
-    private final HistoriqueStatutCommandeRepos HistorisueStatutCommandeRepos;
+    private final HistoriqueStatutCommandeRepos historiqueStatutCommandeRepos;
     private final ProduitRepos produitRepos;
+    private final LigneDeCommandeRepos ligneDeCommandeRepos;
 
     @Override
     public CommandeDto create(CommandeDto commandeDto) throws ResourceNotFoundException, StockInsufficantException {
-
 
         String idSiteDeVente = commandeDto.getIdSiteDeVente();
         Optional<SiteDeVente> siteDeVente = siteDeVenteRepos.findById(idSiteDeVente);
@@ -49,44 +49,39 @@ public class CommandeService implements CommandeInterface {
         commandeDto.setIdClient(clientid);
         Commande commande = dataPMapper.mapFromCmdDtoToCommande(commandeDto);
         commande.setDateDeCommande(LocalDateTime.now());
-
-
+        commande.setCommandeStatut(CommandeStatut.COMMANDE_ENREGISTREE);
+        commande = commandeRepository.save(commande);
+        getHistorisueStatutCommande(commande);
+        commandeDto = dataPMapper.mapFromCmdToCommandeDto(commande);
         List<LigneDeCommande> ligneDeCommandes = commandeDto.getLigneDeCommandes();
+
         double prixTotale = 0;
         for (LigneDeCommande ligneDeCommande : ligneDeCommandes) {
-            String idProduit = ligneDeCommande.getRefProduit();
-            Optional<Produit> produit = produitRepos.findById(idProduit);
-            if(!produit.isPresent()){
-                throw new ResourceNotFoundException("Produit non trouvé");
-            }
-            StockProduitFinis stockProduitFinis = stockProduitFinisRepos.findByProduit(produit.get());
-            ligneDeCommande.setQuantity(ligneDeCommande.getQuantity());
-            ligneDeCommande.setPrixUnitaire(ligneDeCommande.getPrixUnitaire());
-            ligneDeCommande.setRefProduit(produit.get().getId());
-            ligneDeCommande.setCommande(commande);
-            prixTotale += ligneDeCommande.getPrixUnitaire() * ligneDeCommande.getQuantity();
+            int quantite = ligneDeCommande.getQuantity();
+            double prixUnitaire = ligneDeCommande.getPrixUnitaire();
+            ligneDeCommande.setPrixUnitaire(prixUnitaire);
+            double prix = prixUnitaire * quantite;
+            prixTotale += prix;
             commande.setPrixTotale(prixTotale);
-            int quantiteCommande = ligneDeCommandes.stream().map(lc -> lc.getQuantity())
-                    .reduce(0,Integer :: sum);
-            commande.setQuantiteGlobale(quantiteCommande);
-            /*int quantiteEnStock = stockProduitFinis.getQuantite();
-            HistorisueStatutCommande statutCmd = new HistorisueStatutCommande();
-            if(commande.getQuantiteGlobale() > quantiteEnStock){
-                statutCmd.setCommandeId(commande.getIdCommande());
-                statutCmd.setCommandeStatut(CommandeStatut.STOCK_NON_VALIDEE);
-                statutCmd.setDateChangementStatut(LocalDateTime.now());
-                HistorisueStatutCommandeRepos.save(statutCmd);
-            }else if(quantiteCommande <= quantiteEnStock){
-                statutCmd.setCommandeStatut(CommandeStatut.STOCK_VALIDEE);
-            }*/
-
-              commande = commandeRepository.save(commande);
-              commandeDto = dataPMapper.mapFromCmdToCommandeDto(commande);
-            }
-
-
+            ligneDeCommande.setQuantity(quantite);
+            createLigneDeCommande( ligneDeCommande, commandeDto, commande);
+        }
         return commandeDto;
     }
 
+    private void getHistorisueStatutCommande(Commande commande){
+        HistorisueStatutCommande statutCmd = new HistorisueStatutCommande();
+        statutCmd.setDateChangementStatut(LocalDateTime.now());
+        statutCmd.setCommandeStatut(commande.getCommandeStatut());
+        statutCmd.setCommandeId(commande.getIdCommande());
+        historiqueStatutCommandeRepos.save(statutCmd);
+    }
+    private void createLigneDeCommande(LigneDeCommande ligneDeCommande, CommandeDto commandeDto,Commande commande){
 
-}
+        List<LigneDeCommande> ligneDeCommandes = commandeDto.getLigneDeCommandes();
+        ligneDeCommande.setCommande(commande);
+        ligneDeCommande.setRefProduit(ligneDeCommande.getRefProduit());
+        ligneDeCommande.setCommande(commande);
+        ligneDeCommandeRepos.save(ligneDeCommande);
+      }
+    }

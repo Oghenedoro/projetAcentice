@@ -26,10 +26,12 @@ public class Commande {
     private Long idUser;
     private LocalDateTime dateDeCommande;
     private String canal;
-    private int quantiteGlobale;
+  //  private int quantiteGlobale;
     private String commentaires;
     private Long idClient;
     private double prixTotale;
+    @Enumerated(EnumType.STRING)
+    private CommandeStatut commandeStatut;
     @OneToMany(cascade = CascadeType.ALL)
     private List<LigneDeCommande>ligneDeCommandes;
 

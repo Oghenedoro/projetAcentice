@@ -59,7 +59,7 @@ public class ContactService {
 
     public boolean deletContact(String ref) throws ResourceNotFoundException {
         Optional<Contact> contact = contactRepository.findById(ref);
-        if(contact.isEmpty()){
+        if(!contact.isPresent()){
             throw new ResourceNotFoundException("Contact not found !");
         }
         contactRepository.delete(contact.get());

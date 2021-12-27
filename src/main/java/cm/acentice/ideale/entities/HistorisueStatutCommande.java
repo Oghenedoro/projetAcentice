@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 
 @Data
 @NoArgsConstructor
-@AllArgsConstructor
+//@AllArgsConstructor
 @Entity
 public class HistorisueStatutCommande {
 
@@ -24,4 +24,9 @@ public class HistorisueStatutCommande {
     private CommandeStatut commandeStatut;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm")
     private LocalDateTime dateChangementStatut;
+
+    public HistorisueStatutCommande(Long commandeId, CommandeStatut commandeStatut) {
+        this.commandeId = commandeId;
+        this.commandeStatut = commandeStatut;
+    }
 }

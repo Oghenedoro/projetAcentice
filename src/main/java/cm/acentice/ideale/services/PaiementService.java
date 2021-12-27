@@ -81,12 +81,15 @@ public class PaiementService implements PaimentInterface {
 
         if(montantPaye < montantCommande){
             statutCommande.setCommandeStatut(CommandeStatut.PAIEMENTPARTIEL);
+            commande.setCommandeStatut(CommandeStatut.PAIEMENTPARTIEL);
         }
         else if(montantPaye == commande.getPrixTotale()){
             statutCommande.setCommandeStatut(CommandeStatut.PAIEMENT_COMPLET);
+            commande.setCommandeStatut(CommandeStatut.PAIEMENT_COMPLET);
         }
         if(montantPaye > montantCommande){
             statutCommande.setCommandeStatut(CommandeStatut.PAIEMENT_DEPASSE);
+            commande.setCommandeStatut(CommandeStatut.PAIEMENT_DEPASSE);
         }
 
         statutCommandeRepos.save(statutCommande);

@@ -31,8 +31,6 @@ public interface DataPMapper {
     public LigneDeCommande mapFromLigneDeCommandeDto_toLigneDeCommande(LigneDeCommandeDto ligneDeCommandeDto);
     public CommandeLivraison mapFromCommandeLivraisonDto_toCommandeLivraison(CommandeLivraisonDto commandeLivraisonDto);
     public CommandeLivraisonDto mapFromCommandeLivraison_toCommandeLivraisonDto(CommandeLivraison commandeLivraison);
-    public StockVirtuelDto mapFromStockVirtuel_toStockVirtuelDto(StockVirtuel stockVirtuel);
-    public StockVirtuel mapFromStockVirtuelDto_toStockVirtuel(StockVirtuelDto stockVirtuelDto);
 
 }
 

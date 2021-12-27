@@ -14,9 +14,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @AllArgsConstructor
 @Service
@@ -59,48 +58,73 @@ public class CommandeLivraisonService implements CommandeLivraisonInt {
         commandeLivraisonDto.setIdUser(user.get().getUserId());
 
         List<Livraison> livraisons = commandeLivraisonDto.getLivraisons();
+
+        List<Integer> chaqueQteLivreeList = new ArrayList<>();
+        List<Integer> QteLivreeList = new ArrayList<>();
+        List<Integer> qteCmdList = new ArrayList<>();
+
+        int totalQteLivree = 0;
+
         for (Livraison livraison : livraisons) {
-            LinkedList<LigneDeCommande> ligneDeCommandes = ligneDeCommandeRepos.findByRefProduit(livraison.getRefProduit());
+        List<Livraison> livraisons2 = livraisonRepos.findByRefProduitAndCommande(livraison.getRefProduit(),commande.get());
 
-            Optional<Produit> produit = produitRepos.findById(livraison.getRefProduit());
-            if (!produit.isPresent()) {
-                throw new ResourceNotFoundException("produit non trouvé !");
-            }
-            updateStockProduitFinis(produit.get(),livraison );
-
-            StockProduitFinis stockProduitFinis = stockProduitFinisRepos.findByProduit(produit.get());
-            livraison.setCommande(commande.get());
-
-           for (LigneDeCommande ligneDeCommande : ligneDeCommandes) {
-               updateLivraison(livraison,ligneDeCommande);
-            }
-
-            createHistorisueStatutCommande(stockProduitFinis,livraison,commande.get());
-            updateHistoriqueStockProduitFinis(stockProduitFinis, user.get(), livraison);
+        for (Livraison livraison1: livraisons2){
+            totalQteLivree = livraison1.getQuantiteLivre();
         }
 
+        int totalQteLivrees =  totalQteLivree + livraison.getQuantiteLivre();
+        QteLivreeList.add(totalQteLivrees);
+
+        Optional<Produit> produit = produitRepos.findById(livraison.getRefProduit());
+        if (!produit.isPresent()) {
+            throw new ResourceNotFoundException("produit non trouvé !");
+        }
+        List<LigneDeCommande> ligneDeCommandes = ligneDeCommandeRepos.findByCommandeAndRefProduit(commande.get(),produit.get().getId());
+        updateStockProduitFinis(produit.get(),livraison );
+
+        StockProduitFinis stockProduitFinis = stockProduitFinisRepos.findByProduit(produit.get());
+        livraison.setCommande(commande.get());
+
+       int quantiteCommandee = 0;
+       for (LigneDeCommande ligneDeCommande : ligneDeCommandes) {
+           quantiteCommandee = ligneDeCommande.getQuantity();
+           updateLivraison(livraison,ligneDeCommande,commande.get());
+        }
+       qteCmdList.add(quantiteCommandee);
+
+         updateCommandeStatut(commande, QteLivreeList, qteCmdList);
+         updateHistoriqueStockProduitFinis(stockProduitFinis, user.get(), livraison);
+        }
         CommandeLivraison commandeLivraison = dataPMapper.mapFromCommandeLivraisonDto_toCommandeLivraison(commandeLivraisonDto);
         commandeLivraison.setDateLivraison(LocalDateTime.now());
         commandeLivraison = commandeLivraisonRepos.save(commandeLivraison);
+        createHistorisueStatutCommande(commande.get());
         commandeLivraisonDto = dataPMapper.mapFromCommandeLivraison_toCommandeLivraisonDto(commandeLivraison);
 
         return commandeLivraisonDto;
     }
 
-    private void createHistorisueStatutCommande(StockProduitFinis stockProduitFinis,Livraison livraison,Commande commande) throws LivraisonImpossibleException {
-        HistorisueStatutCommande historisueStatutCommande = new HistorisueStatutCommande();
-        int qtyCommande = livraison.getQuantiteCommandee();
-        int qtyRestante = livraison.getQuantiteRestante();
+    private void updateCommandeStatut(Optional<Commande> commande, List<Integer> QteLivreeList, List<Integer> qteCmdList) {
+        int totalQteCmd = qteCmdList.stream().reduce(0,(Integer::sum));
+        int totalQteLivre = QteLivreeList.stream().reduce(0,(Integer::sum));
 
-        if (stockProduitFinis.getQuantite() < commande.getQuantiteGlobale()) {
-            historisueStatutCommande.setCommandeStatut(CommandeStatut.STOCK_NON_VALIDEE);
-        } else if (stockProduitFinis.getQuantite() >= commande.getQuantiteGlobale()) {
-            historisueStatutCommande.setCommandeStatut(CommandeStatut.STOCK_VALIDEE);
+        if (totalQteCmd == 0 || totalQteLivre == 0 ){
+            commande.get().setCommandeStatut(CommandeStatut.LIVRAISON_PARTIEL);
         }
 
-        livraison.setQuantiteCommandee(qtyCommande);
-        livraison.setQuantiteRestante(qtyRestante);
-        historisueStatutCommande.setCommandeId(livraison.getCommande().getIdCommande());
+        if (totalQteCmd > totalQteLivre ){
+            commande.get().setCommandeStatut(CommandeStatut.LIVRAISON_PARTIEL);
+        }
+
+        else if (totalQteCmd == totalQteLivre){
+            commande.get().setCommandeStatut(CommandeStatut.LIVRAISON_COMPLET);
+        }
+    }
+
+    private void createHistorisueStatutCommande(Commande commande) {
+        HistorisueStatutCommande historisueStatutCommande = new HistorisueStatutCommande();
+        historisueStatutCommande.setCommandeStatut(commande.getCommandeStatut());
+        historisueStatutCommande.setCommandeId(commande.getIdCommande());
         historisueStatutCommande.setDateChangementStatut(LocalDateTime.now());
 
         HistorisueStatutCommandeRepos.save(historisueStatutCommande);
@@ -136,31 +160,31 @@ public class CommandeLivraisonService implements CommandeLivraisonInt {
 
         }
 
-    public void updateLivraison(Livraison livraison,LigneDeCommande ligneDeCommande) throws LivraisonImpossibleException {
+    public void updateLivraison(Livraison livraison,LigneDeCommande ligneDeCommande,Commande commande) throws LivraisonImpossibleException {
 
-        LinkedList<Livraison> livraisons = livraisonRepos.findByRefProduit(livraison.getRefProduit());
-        int quantiteCommandee = ligneDeCommande.getQuantity();
-        if(livraisons.size() == 0){
+        LinkedList<Livraison> livraisons = livraisonRepos.findByRefProduitAndCommande(livraison.getRefProduit(),commande);
             int quantiteLivre = livraison.getQuantiteLivre();
-            int qteRestante = quantiteCommandee - quantiteLivre;
-            livraison.setId(livraison.getId());
-            livraison.setCommande(livraison.getCommande());
-            livraison.setRefProduit(livraison.getRefProduit());
-            livraison.setQuantiteCommandee(quantiteCommandee);
-            livraison.setQuantiteRestante(qteRestante);
-            if(quantiteLivre > quantiteCommandee ){
-                throw new LivraisonImpossibleException("On ne peut pas livrer plus que commandé !");
+             int quantiteCommandee = ligneDeCommande.getQuantity();
+            if (livraisons.size() == 0) {
+                livraison.setQuantiteLivre(quantiteLivre);
+                int qteRestante = quantiteCommandee - quantiteLivre;
+                livraison.setId(livraison.getId());
+                livraison.setCommande(livraison.getCommande());
+                livraison.setRefProduit(livraison.getRefProduit());
+                livraison.setQuantiteCommandee(quantiteCommandee);
+                livraison.setQuantiteRestante(qteRestante);
+            } else if (livraisons.size() > 0) {
+                int quantitePrecedente = livraisons.getLast().getQuantiteLivre();
+                quantiteLivre += quantitePrecedente;
+                int qteRestante = quantiteCommandee - quantiteLivre;
+
+                livraison.setQuantiteCommandee(quantiteCommandee);
+                livraison.setQuantiteLivre(quantiteLivre);
+                livraison.setQuantiteRestante(qteRestante);
+                if (quantiteLivre > quantiteCommandee) {
+                    throw new LivraisonImpossibleException("On ne peut pas livrer plus que commandé !");
+                }
+                livraisonRepos.save(livraison);
             }
-        }else if(livraisons.size() > 0){
-        int quantitePrecedente = livraisons.getLast().getQuantiteLivre();
-        int totalQteLivre = quantitePrecedente + livraison.getQuantiteLivre();
-        int qteRestante = quantiteCommandee - totalQteLivre;
-        livraison.setQuantiteCommandee(quantiteCommandee);
-        livraison.setQuantiteLivre(totalQteLivre);
-        livraison.setQuantiteRestante(qteRestante);
-            if(totalQteLivre > quantiteCommandee ){
-                throw new LivraisonImpossibleException("On ne peut pas livrer plus que commandé !");
-            }
-        livraisonRepos.save(livraison);
-    }
-}}
+        }
+}
