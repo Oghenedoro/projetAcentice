@@ -18,6 +18,6 @@ private final ApprovisionnementPFService approvisionnementPFService;
     }
     @RequestMapping(value = "/approvisionnement/produitfinis", method = RequestMethod.POST)
     public void create(@RequestBody ApprovisionnementProduitFinisDto approvisionnementPFDto) throws ResourceNotFoundException, ResourceExisteDejaException {
-         approvisionnementPFService.create(approvisionnementPFDto);
+       //  approvisionnementPFService.create(approvisionnementPFDto);
     }
 }

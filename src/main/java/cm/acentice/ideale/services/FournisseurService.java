@@ -99,9 +99,7 @@ public class FournisseurService {
         fournisseurMP.setTelephone(fournisseurDto.getTelephone());
 
         for (MatierePremFournisseurMP mpf : fournisseurDto.getMatierePremFournisseurMPS()) {
-            if (mpf.getFournisseurMP() == null) {
-                mpf.setFournisseurMP(fournisseurMP);
-            }
+            mpf.setFournisseurMP(fournisseurMP);
         }
 
         fournisseurMP.setMatierePremFournisseurMPS(fournisseurDto.getMatierePremFournisseurMPS());

@@ -29,10 +29,4 @@ public class Produit {
     @OneToMany(mappedBy = "produit",cascade = CascadeType.ALL,fetch = FetchType.LAZY)
     private List<ApprovissionnementPFHasProduit>approvissionnementPFHasProduits;
 
-    @JsonIgnore
-    @OneToMany(mappedBy = "produit",cascade = CascadeType.ALL,fetch = FetchType.LAZY)
-    private List<ProduitHasMatierePremier>produitHasMatierePremiers;
-    @Transient
-    private int quantiteFabrique;
-
 }

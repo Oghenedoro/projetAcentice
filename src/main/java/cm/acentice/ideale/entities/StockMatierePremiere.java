@@ -30,13 +30,6 @@ public class StockMatierePremiere {
     private Date dateDerniereMaj;
     private String refMP;
 
-   /* @JsonIgnore
-    @ManyToOne(fetch = FetchType.LAZY,cascade = CascadeType.MERGE)
-    @JoinColumn(name = "idMP",referencedColumnName = "reference")*/
-   /* @Transient
-    private MatierePremiere matierePremiere;
-*/
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

@@ -35,7 +35,7 @@ public class StockVirtuelService implements StockVirtuelInt {
 
             for (Livraison livraison : livraisons) {
                 quantiteRestant = livraison.getQuantiteRestante();
-                StockProduitFinis stockProduitFinis = stockProduitFinisRepos.findByProduit(produit);
+                StockProduitFinis stockProduitFinis = stockProduitFinisRepos.findByRefProduit(produit.getId());
                int quantiteEnStock = stockProduitFinis.getQuantite();
 
                 int diff = quantiteEnStock - quantiteRestant;

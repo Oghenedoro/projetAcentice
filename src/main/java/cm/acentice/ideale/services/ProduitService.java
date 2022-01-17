@@ -2,7 +2,6 @@ package cm.acentice.ideale.services;
 
 import cm.acentice.ideale.dto.ProduitDto;
 import cm.acentice.ideale.entities.Produit;
-import cm.acentice.ideale.repositories.ProductionProduitFinisRepos;
 import cm.acentice.ideale.repositories.ProduitRepos;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
@@ -14,13 +13,11 @@ import java.util.UUID;
 public class ProduitService {
 
     private final ProduitRepos produitRepos;
-    private final ProductionProduitFinisRepos productionProduitFinisRepos;
     private final ModelMapper modelMapper;
 
-   // @Autowired
-    public ProduitService(ProduitRepos produitRepos, ProductionProduitFinisRepos productionProduitFinisRepos, ModelMapper modelMapper) {
+
+    public ProduitService(ProduitRepos produitRepos, ModelMapper modelMapper) {
         this.produitRepos = produitRepos;
-        this.productionProduitFinisRepos = productionProduitFinisRepos;
         this.modelMapper = modelMapper;
     }
 

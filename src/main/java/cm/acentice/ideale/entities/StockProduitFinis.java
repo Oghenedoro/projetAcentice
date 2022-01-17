@@ -27,10 +27,16 @@ public class StockProduitFinis {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm")
     private LocalDateTime dateDerniereMaj;
 
-    @ManyToOne(cascade = CascadeType.MERGE)
-    @JoinColumn(name = "refProduit",referencedColumnName = "id")
+    @Column(name = "refProduit", nullable = false)
+    private String refProduit;
+
+    @Column(name = "idSiteDeProduction", nullable = false)
+    private Long idSiteDeProduction;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "refProduit",insertable = false, updatable = false)
     private Produit produit;
     @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "idSiteDeProduction")
+    @JoinColumn(name = "idSiteDeProduction", insertable = false, updatable = false)
     private SiteDeProduction siteDeProduction;
 }

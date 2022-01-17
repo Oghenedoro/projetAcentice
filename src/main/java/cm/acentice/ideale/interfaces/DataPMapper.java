@@ -31,6 +31,10 @@ public interface DataPMapper {
     public LigneDeCommande mapFromLigneDeCommandeDto_toLigneDeCommande(LigneDeCommandeDto ligneDeCommandeDto);
     public CommandeLivraison mapFromCommandeLivraisonDto_toCommandeLivraison(CommandeLivraisonDto commandeLivraisonDto);
     public CommandeLivraisonDto mapFromCommandeLivraison_toCommandeLivraisonDto(CommandeLivraison commandeLivraison);
-
+    public ProductionDto mapFromProduction_toProductionDto(Production production);
+    public Production mapFromProductionDto_toProduction(ProductionDto productionDto);
+    public ProductionResult mapFromProductionResultDto_toProductionResult(ProductionResultDto productionResultDto);
+    public ProductionResultDto mapFromProductionResult_toProductionResultDto(ProductionResult productionResult);
+    public MatierePremiereConsumee mapFromMatierePremiereConsumeeDto_toMatierePremiereConsumee(MatierePremiereConsumeeDto dto);
 }
 

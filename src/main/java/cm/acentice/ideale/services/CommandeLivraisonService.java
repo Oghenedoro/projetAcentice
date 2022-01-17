@@ -59,7 +59,6 @@ public class CommandeLivraisonService implements CommandeLivraisonInt {
 
         List<Livraison> livraisons = commandeLivraisonDto.getLivraisons();
 
-        List<Integer> chaqueQteLivreeList = new ArrayList<>();
         List<Integer> QteLivreeList = new ArrayList<>();
         List<Integer> qteCmdList = new ArrayList<>();
 
@@ -82,7 +81,7 @@ public class CommandeLivraisonService implements CommandeLivraisonInt {
         List<LigneDeCommande> ligneDeCommandes = ligneDeCommandeRepos.findByCommandeAndRefProduit(commande.get(),produit.get().getId());
         updateStockProduitFinis(produit.get(),livraison );
 
-        StockProduitFinis stockProduitFinis = stockProduitFinisRepos.findByProduit(produit.get());
+        StockProduitFinis stockProduitFinis = stockProduitFinisRepos.findByRefProduit(produit.get().getId());
         livraison.setCommande(commande.get());
 
        int quantiteCommandee = 0;
@@ -150,7 +149,7 @@ public class CommandeLivraisonService implements CommandeLivraisonInt {
     }
 
     private void updateStockProduitFinis(Produit produit, Livraison livraison) {
-        StockProduitFinis stockProduitFinis = stockProduitFinisRepos.findByProduit(produit);
+        StockProduitFinis stockProduitFinis = stockProduitFinisRepos.findByRefProduit(produit.getId());
         stockProduitFinis.setDateDerniereMaj(LocalDateTime.now());
         int qttLivPourLivre = livraison.getQuantiteLivre();
         int quantiteEnStock = stockProduitFinis.getQuantite();

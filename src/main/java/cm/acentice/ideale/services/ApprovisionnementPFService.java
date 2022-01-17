@@ -37,7 +37,7 @@ public class ApprovisionnementPFService {
         this.produitRepos = produitRepos;
         this.userRepos = userRepos;
     }
-    @Transactional
+   /* @Transactional
     public void create(ApprovisionnementProduitFinisDto approvisionnementPFDto) throws ResourceNotFoundException,ResourceExisteDejaException {
         ApprovisionnementProduitFinis approvisionnementProduitFinis = new ApprovisionnementProduitFinis();
 
@@ -119,6 +119,6 @@ public class ApprovisionnementPFService {
         User user = userRepos.findById(id).get();
         historiqueStockProduitsFinis.setUser(user);
         return historiqueStockProduitsFinisRepos.save(historiqueStockProduitsFinis);
-    }
+    }*/
 }
 

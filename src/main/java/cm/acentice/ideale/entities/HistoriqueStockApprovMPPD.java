@@ -18,9 +18,9 @@ public class HistoriqueStockApprovMPPD {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="ID")
     private Long id;
-    @Column(name="REF_ARTICLE",length = 25)
+    @Column(name="REF_ARTICLE")
     private String refArticle;
-    @Column(name="TYPE_MOVEMENT", length = 25)
+    @Column(name="TYPE_MOVEMENT")
     private String TypeMouvement;
     private int ancienneValeurStock;
     private int quantitéModifiee;

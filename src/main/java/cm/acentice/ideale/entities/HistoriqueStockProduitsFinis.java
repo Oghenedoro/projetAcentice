@@ -26,7 +26,9 @@ public class HistoriqueStockProduitsFinis {
     private int nouvelleValeurStock;
     private LocalDateTime dateMAJ;
 
-    @ManyToOne
+   /* @Column(name = "idUser", nullable = false)
+    private Long idUser;*/
+    @ManyToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name = "idUser")
     private User user;
     private Long idSiteDeProduction;

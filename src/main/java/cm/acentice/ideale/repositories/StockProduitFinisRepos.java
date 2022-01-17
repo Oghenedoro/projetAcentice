@@ -9,8 +9,8 @@ import java.util.List;
 
 public interface StockProduitFinisRepos extends JpaRepository<StockProduitFinis, Long> {
 
-    StockProduitFinis findByProduit(Produit produit);
+    StockProduitFinis findByRefProduit(String refProduit);
 
-    @Query("Select s from StockProduitFinis s where s.produit.id = 1 ")
-    List<StockProduitFinis>getStockProdByProduit(String idproduit);
+    /*@Query("Select s from StockProduitFinis s where s.produit.id = 1 ")
+    List<StockProduitFinis>getStockProdByProduit(String idproduit);*/
 }
